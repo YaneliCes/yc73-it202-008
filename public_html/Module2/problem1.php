@@ -11,7 +11,6 @@ function processArray($arr) {
 
     //yc73
     //2-1-24
-    //this loops through each number in the current array 
     foreach ($arr as $num) {
         if ($num%2 != 0) {
             echo $num . "<br>";
