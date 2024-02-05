@@ -9,6 +9,17 @@ function processArray($arr) {
     //note: use the $arr variable to iterate over, don't directly touch $a1-$a4
     //TODO add logic here to echo out only odd values
 
+    //yc73
+    //2-1-24
+    //this loops through each number in the current array 
+    foreach ($arr as $num) {
+        if ($num%2 != 0) {
+            echo $num . "<br>";
+        }
+        else {
+            continue;
+        }
+    }
 }
 echo "Problem 1: Odd Output<br>";
 ?>

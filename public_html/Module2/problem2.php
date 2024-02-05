@@ -9,6 +9,15 @@ function getTotal($arr) {
     //note: use the $arr variable, don't directly touch $a1-$a4
     //TODO do adding here
     //TODO do rounding stuff here (round to two decimals i.e., 0.10, 0.01, 0.00)
+
+    //yc73
+    //2-1-24
+    foreach ($arr as $num) {
+        $total += $num;
+    }
+    //got help from: https://www.w3schools.com/php/func_string_number_format.asp
+    $total = number_format($total, 2);
+
     echo "The total is " . var_export($total, true);
 }
 echo "Problem 2: Adding Floats<br>";

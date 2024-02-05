@@ -10,6 +10,25 @@ function bePositive($arr) {
     //note: use the $arr variable, don't directly touch $a1-$a4
     //TODO use echo to output all of the values as positive (even if they were originally positive) and maintain the original datatype
     //hint: may want to use var_dump() or similar to show final data types
+
+    //yc73
+    //2-1/24
+    foreach ($arr as $num) {
+        //got help from: https://www.w3schools.com/php/php_numbers.asp
+        if (is_int($num)) {
+            //got help from:https://www.w3schools.com/php/php_casting.asp
+            $num = (int)abs($num);
+            echo $num . "<br>";
+        }
+        elseif (is_float($num)) {
+            $num = (float)abs($num);
+            echo $num . "<br>";
+        }
+        elseif (is_string($num)) {
+            $num = (string)abs($num);
+            echo $num . "<br>";
+        }
+    }
 }
 echo "Problem 3: Be Positive<br>";
 ?>
