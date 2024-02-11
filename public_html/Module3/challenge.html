@@ -8,6 +8,28 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            
+            /*
+            yc73
+            2-8-24
+            */
+                /* got help from:
+                    https://stackoverflow.com/questions/54537140/update-div-content-when-link-is-clicked
+                    https://www.w3schools.com/jsref/met_document_queryselectorall.asp
+                */
+            /* selector grabs all the <a> elements (the navigation links) that are children of <nav> */
+            let navbar_links = document.querySelectorAll("nav ul li a");
+            /* loops through each <a> element (the links) */
+            for (let i = 0; i < navbar_links.length; i++) {
+                /* adds a event listener that waits until the link is clicked then runs a function */
+                    /* got help from: https://stackoverflow.com/questions/57135624/how-to-add-eventlistener-to-an-html-link */
+                navbar_links[i].addEventListener("click", () => {
+                    /* got help from: https://bobbyhadz.com/blog/javascript-get-text-of-html-element */
+                    let link_text = navbar_links[i].innerText;
+                    updateCurrentPage(link_text);
+                });
+            }
+
         });
         function getCurrentSelection() {
             setTimeout(() => {
@@ -20,6 +42,61 @@
     </script>
     <style>
         /* TODO: make edits here */
+
+        /*
+        yc73
+        2-5-24
+        */
+        nav ul {
+            /* floats list to the left */
+            float: left;
+            padding: 0;
+            /* sets the navigation's background color */
+            background-color: #DCDCDC;
+            width: 100%;
+        }
+        /* by making this selector "nav li" it increases its specificity
+            which outweighs the lower degree specificity of "ul" so the "ul" list-style-type doesn't change the "nav li" style */
+        nav li {
+            /* floats list to the left and helps pull it horizontally */
+            float: left;
+            /* removes the list markers from the navigation's list items */
+            list-style-type: none;
+            /* my own styling: a divider (border) to the right of each nav list item */
+            border-right:2px solid rgb(246, 245, 245)
+        }
+        nav li:last-child {
+            /* my own styling: removes border from last nav list item */
+            border-right: none;
+        }
+        nav li a {
+            /* displays each (nav) list item as blocks so I can adjust each <a> element (in nav) */
+            display: block;
+            padding: 10px;
+        }
+        nav li a:hover {
+            /* changes link text color to red when user hovers over it */
+            color: red;
+        }
+        /* selects the first letter in each <a> element */
+        a::first-letter {
+            /* changes the selected first letter to uppercase */
+            text-transform: capitalize;
+        }
+        h1 {
+            /* clears the floats and allows h1 to remain unaffacted from the list items float */
+            clear: left;
+        }
+        /* selects the first letter in each <h1> element */
+        h1::first-letter {
+            /* changes the selected first letter to uppercase */
+            text-transform: capitalize;
+        }
+        ul {
+            /* changes the bullet points to a checkpoint marker for the entire challenge list */
+            list-style-type: "✓";
+        }
+
     </style>
     <!-- make the necessary edits above this line -->
 
