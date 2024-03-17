@@ -5,7 +5,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input id="email" type="email" name="email" required />
+        <input type="email" name="email" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -22,15 +22,15 @@ require_once(__DIR__ . "/../../partials/nav.php");
     }
 </script>
 <?php
- //TODO 2: add PHP Code
- if(isset($_POST["email"]) && isset($_POST["password"])) {
+//TODO 2: add PHP Code
+if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);    //$_POST["email"];
     $password = se($_POST, "password", "", false);    //$_POST["password"];
 
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        flash("Email must not be empty <br>");
+        flash("Email must not be empty", "danger");
         $hasError = true;
     }
 
@@ -43,16 +43,16 @@ require_once(__DIR__ . "/../../partials/nav.php");
             $hasError = true;
         }*/
     if (!is_valid_email($email)) {
-        flash("Invalid email address");
+        flash("Invalid email address", "danger");
         $hasError = true;
     }
 
     if (empty($password)) {
-        flash("password must not be empty <br>");
+        flash("password must not be empty", "danger");
         $hasError = true;
     }
     if (strlen($password) < 8) {
-        flash("Password too short <br>");
+        flash("Password too short", "danger");
         $hasError = true;
     }
     if (!$hasError) {
@@ -60,7 +60,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
 
         //TODO 4
         $db = getDB();
-        $stmt = $db->prepare("SELECT email, password from Users where email = :email");
+        $stmt = $db->prepare("SELECT id, email, username, password from Users where email = :email");
         try {
             $r = $stmt->execute([":email" => $email]);
             if ($r) {
@@ -73,10 +73,10 @@ require_once(__DIR__ . "/../../partials/nav.php");
                         $_SESSION["user"] = $user;
                         die(header("Location: home.php"));
                     } else {
-                        flash("Invalid password");
+                        flash("Invalid password", "danger");
                     }
                 } else {
-                    flash("Email not found");
+                    flash("Email not found", "danger");
                 }
             }
         } catch (Exception $e) {
