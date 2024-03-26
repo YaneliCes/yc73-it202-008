@@ -33,7 +33,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         flash("Email must not be empty", "danger");
         $hasError = true;
     }
-    
     //sanitize
         //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $email = sanitize_email($email);
@@ -56,8 +55,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $hasError = true;
     }
     if (!$hasError) {
-        //echo "Welcome, $email";
-
+        //flash("Welcome, $email");
         //TODO 4
         $db = getDB();
         $stmt = $db->prepare("SELECT id, email, username, password from Users where email = :email");
@@ -71,6 +69,22 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     if (password_verify($password, $hash)) {
                         //flash("Weclome $email");
                         $_SESSION["user"] = $user; //sets our session data from db
+                        try {
+                            //lookup potential roles
+                            $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                        JOIN UserRoles on Roles.id = UserRoles.role_id 
+                        where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                            $stmt->execute([":user_id" => $user["id"]]);
+                            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                        } catch (Exception $e) {
+                            error_log(var_export($e, true));
+                        }
+                        //save roles or empty array
+                        if (isset($roles)) {
+                            $_SESSION["user"]["roles"] = $roles; //at least 1 role
+                        } else {
+                            $_SESSION["user"]["roles"] = []; //no roles
+                        }
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
@@ -84,6 +98,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             flash("<pre>" . var_export($e, true) . "</pre>");
         }
     }
- }
+}
 ?>
-<?php require_once(__DIR__ . "/../../partials/flash.php");
+<?php require(__DIR__."/../../partials/flash.php");
