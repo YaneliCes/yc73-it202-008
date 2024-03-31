@@ -4,8 +4,8 @@ require_once(__DIR__ . "/../../partials/nav.php");
 
 <form onsubmit="return validate(this)" method="POST">
     <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <label for="email">Email/Username</label>
+        <input type="text" name="email" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -17,8 +17,43 @@ require_once(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let is_valid = true;
+        const email = form.email.value; 
+        const pw = form.password.value;
 
-        return true;
+        if (email.length === 0) {
+            flash("Email/Username must not be empty", "warning");
+            is_valid = false;
+        }
+        if (email.includes("@")) {
+            const email_pattern = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if (!email_pattern.test(email)) {
+                flash("Invalid email address", "warning");
+                is_valid = false;
+            }
+        }
+        else {
+            const user_pattern = /^[a-z0-9_-]{3,16}$/;
+            if(!user_pattern.test(email)) {
+                flash("Invalid username", "warning");
+                is_valid = false;
+            }
+        }
+        if (pw.length === 0) {
+            flash("Password must not be empty", "warning");
+            is_valid = false;
+        }
+        else {
+            const pw_pattern = /^.{8,}/;
+            if(!pw_pattern.test(pw)){
+                flash("Password too short", "warning");
+                is_valid = false;
+            }
+        }
+
+        //TODO update clientside validation to check if it should
+        //valid email or username
+        return is_valid;
     }
 </script>
 <?php
@@ -30,35 +65,42 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        flash("Email must not be empty", "danger");
+        flash("Email must not be empty");
         $hasError = true;
     }
-    //sanitize
+    if (str_contains($email, "@")) {
+        //sanitize
         //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    $email = sanitize_email($email);
-    //validate
+        $email = sanitize_email($email);
+        //validate
         /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             flash("Invalid email address");
             $hasError = true;
         }*/
-    if (!is_valid_email($email)) {
-        flash("Invalid email address", "danger");
-        $hasError = true;
-    }
+        if (!is_valid_email($email)) {
+            flash("Invalid email address");
+            $hasError = true;
+        }
     
+    } else {
+        if (!is_valid_username($email)) {
+            flash("Invalid username");
+            $hasError = true;
+        }
+    }
     if (empty($password)) {
-        flash("password must not be empty", "danger");
+        flash("Password must not be empty");
         $hasError = true;
     }
     if (!is_valid_password($password)) {
-        flash("Password too short", "danger");
+        flash("Password too short");
         $hasError = true;
     }
     if (!$hasError) {
         //flash("Welcome, $email");
         //TODO 4
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, email, username, password from Users where email = :email");
+        $stmt = $db->prepare("SELECT id, email, username, password from Users where email = :email or username = :email");
         try {
             $r = $stmt->execute([":email" => $email]);
             if ($r) {
@@ -88,10 +130,10 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
-                        flash("Invalid password", "danger");
+                        flash("Invalid password");
                     }
                 } else {
-                    flash("Email not found", "danger");
+                    flash("Email not found");
                 }
             }
         } catch (Exception $e) {
@@ -100,4 +142,4 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
 }
 ?>
-<?php require(__DIR__."/../../partials/flash.php");
+<?php require_once(__DIR__ . "/../../partials/flash.php");
