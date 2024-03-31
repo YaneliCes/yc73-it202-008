@@ -25,8 +25,55 @@ reset_session();
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let is_valid = true;
+        const email = form.email.value;
+        const user = form.username.value; 
+        const pw = form.password.value;
+        const pw_confirm = form.confirm.value;
 
-        return true;
+        if (email.length === 0) {
+            flash("Email must not be empty", "warning");
+            is_valid = false;
+        }
+        else {
+            const email_pattern = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if (!email_pattern.test(email)) {
+                flash("Invalid email address", "warning");
+                is_valid = false;
+            }
+        }
+        if (user.length === 0) {
+            flash("Username must not be empty", "warning");
+            is_valid = false;
+        } 
+        else {
+            const user_pattern = /^[a-z0-9_-]{3,16}$/;
+            if(!user_pattern.test(user)) {
+                flash("Invalid username", "warning");
+                is_valid = false;
+            }
+        }
+        if (pw.length === 0) {
+            flash("Password must not be empty", "warning");
+            is_valid = false;
+        }
+        else {
+            const pw_pattern = /^.{8,}/;
+            if(!pw_pattern.test(pw)){
+                flash("Password too short", "warning");
+                is_valid = false;
+            }
+        }
+        if (pw_confirm.length === 0) {
+            flash("Confirm password must not be empty", "warning");
+            is_valid = false;
+        }
+        if (pw.length > 0 && pw !== pw_confirm) {
+            flash ("Passwords must match", "warning");
+            is_valid = false;
+        }
+
+        return is_valid;
     }
 </script>
 <?php
