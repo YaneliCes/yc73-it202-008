@@ -7,11 +7,11 @@ reset_session();
         <div class="regCont">
             <div>
                 <label for="email">Email</label>
-                <input type="email" name="email" required />
+                <input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''?>" required />
             </div>
             <div>
                 <label for="username">Username</label>
-                <input type="text" name="username" required maxlength="30" />
+                <input type="text" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''?>" required maxlength="30" />
             </div>
             <div>
                 <label for="pw">Password</label>
