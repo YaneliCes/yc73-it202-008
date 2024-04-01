@@ -2,6 +2,7 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
 <body class="loginBody">
+    <!-- yc73 4/1/23 -->
     <form onsubmit="return validate(this)" method="POST">
         <div class="loginCont">
             <div class="loginCenter">
@@ -21,6 +22,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
     </form>
 </body>
 <script>
+    /* yc73 4/1/23 */
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
@@ -64,6 +66,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
     }
 </script>
 <?php
+/* yc73 4/1/23 */
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
