@@ -68,48 +68,55 @@ if (isset($_POST["username"])) {
 
 
 ?>
-<h1>Assign Roles</h1>
-<form method="POST">
-    <input type="search" name="username" placeholder="Username search" />
-    <input type="submit" value="Search" />
-</form>
-<form method="POST">
-    <?php if (isset($username) && !empty($username)) : ?>
-        <input type="hidden" name="username" value="<?php se($username, false); ?>" />
-    <?php endif; ?>
-    <table>
-        <thead>
-            <th>Users</th>
-            <th>Roles to Assign</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <table>
-                        <?php foreach ($users as $user) : ?>
-                            <tr>
-                                <td>
-                                    <label for="user_<?php se($user, 'id'); ?>"><?php se($user, "username"); ?></label>
-                                    <input id="user_<?php se($user, 'id'); ?>" type="checkbox" name="users[]" value="<?php se($user, 'id'); ?>" />
-                                </td>
-                                <td><?php se($user, "roles", "No Roles"); ?></td>
-                            </tr>
+<div class="arBody">
+    <h1 class="arTitle">Assign Roles</h1>
+    <form method="POST">
+        <div class="arCont">
+            <input type="search" name="username" placeholder="Username search" />
+            <input type="submit" value="Search" />
+        </div>
+    </form>
+
+    <form method="POST">
+        <?php if (isset($username) && !empty($username)) : ?>
+            <input type="hidden" name="username" value="<?php se($username, false); ?>" />
+        <?php endif; ?>
+        <table>
+            <thead class="tableHeader">
+                <th>Users</th>
+                <th>Roles to Assign</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <?php foreach ($users as $user) : ?>
+                                <tr>
+                                    <td>
+                                        <label for="user_<?php se($user, 'id'); ?>"><?php se($user, "username"); ?></label>
+                                        <input id="user_<?php se($user, 'id'); ?>" type="checkbox" name="users[]" value="<?php se($user, 'id'); ?>" />
+                                    </td>
+                                    <td><?php se($user, "roles", "No Roles"); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </td>
+                    <td class="assignTable">
+                        <?php foreach ($active_roles as $role) : ?>
+                            <div>
+                                <label for="role_<?php se($role, 'id'); ?>"><?php se($role, "name"); ?></label>
+                                <input id="role_<?php se($role, 'id'); ?>" type="checkbox" name="roles[]" value="<?php se($role, 'id'); ?>" />
+                            </div>
                         <?php endforeach; ?>
-                    </table>
-                </td>
-                <td>
-                    <?php foreach ($active_roles as $role) : ?>
-                        <div>
-                            <label for="role_<?php se($role, 'id'); ?>"><?php se($role, "name"); ?></label>
-                            <input id="role_<?php se($role, 'id'); ?>" type="checkbox" name="roles[]" value="<?php se($role, 'id'); ?>" />
-                        </div>
-                    <?php endforeach; ?>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <input type="submit" value="Toggle Roles" />
-</form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+            <div class="arCont">
+                <input type="submit" value="Toggle Roles" />
+            </div>
+    </form>
+</div>
 <?php
 //note we need to go up 1 more directory
 require_once(__DIR__ . "/../../../partials/flash.php");

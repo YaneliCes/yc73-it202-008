@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h1>Home</h1>
+<h1 class="homeTitle">Home</h1>
 <?php
 if (is_logged_in(true)) {
     //flash("Welcome, " . get_user_email(");
