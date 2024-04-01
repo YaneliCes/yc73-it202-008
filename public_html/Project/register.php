@@ -3,6 +3,7 @@ require_once(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
 <div class="regBody">
+    <!-- yc73 4/1/23 -->
     <form onsubmit="return validate(this)" method="POST">
         <div class="regCont">
             <div>
@@ -26,6 +27,7 @@ reset_session();
     </form>
 </div>
 <script>
+    /* yc73 4/1/23 */
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
@@ -81,6 +83,7 @@ reset_session();
     }
 </script>
 <?php
+/* yc73 4/1/23 */
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"]) && isset($_POST["username"])) {
     $email = se($_POST, "email", "", false);
