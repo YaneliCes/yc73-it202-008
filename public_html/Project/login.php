@@ -1,18 +1,25 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
-
-<form onsubmit="return validate(this)" method="POST">
-    <div>
-        <label for="email">Email/Username</label>
-        <input type="text" name="email" required />
-    </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <input type="submit" value="Login" />
-</form>
+<body class="loginBody">
+    <form onsubmit="return validate(this)" method="POST">
+        <div class="loginCont">
+            <div class="loginCenter">
+                <div>
+                    <label for="email">Email/Username</label>
+                    <input type="text" name="email" required />
+                </div>
+                <div>
+                    <label for="pw">Password</label>
+                    <input type="password" id="pw" name="password" required minlength="8" />
+                </div>
+                <div>
+                    <input type="submit" value="Login" />
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
 <script>
     function validate(form) {
         //TODO 1: implement JavaScript validation
@@ -65,7 +72,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        flash("Email must not be empty");
+        flash("Email must not be empty", "danger");
         $hasError = true;
     }
     if (str_contains($email, "@")) {
@@ -78,22 +85,22 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             $hasError = true;
         }*/
         if (!is_valid_email($email)) {
-            flash("Invalid email address");
+            flash("Invalid email address", "danger");
             $hasError = true;
         }
     
     } else {
         if (!is_valid_username($email)) {
-            flash("Invalid username");
+            flash("Invalid username", "danger");
             $hasError = true;
         }
     }
     if (empty($password)) {
-        flash("Password must not be empty");
+        flash("Password must not be empty", "danger");
         $hasError = true;
     }
     if (!is_valid_password($password)) {
-        flash("Password too short");
+        flash("Password too short", "danger");
         $hasError = true;
     }
     if (!$hasError) {
@@ -130,10 +137,10 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
-                        flash("Invalid password");
+                        flash("Invalid password", "danger");
                     }
                 } else {
-                    flash("Email not found");
+                    flash("Email not found", "danger");
                 }
             }
         } catch (Exception $e) {
