@@ -1,0 +1,240 @@
+.alert-success {
+    padding: 15px;
+    padding-left: 40px;
+    border-radius: 5px;
+    font-family: sans-serif;
+    color: white;
+    background-color: green
+}
+
+.alert-warning {
+    padding: 15px;
+    padding-left: 40px;
+    border-radius: 5px;
+    font-family: sans-serif;
+    color: black;
+    background-color: yellow;
+}
+
+.alert-danger {
+    padding: 15px;
+    padding-left: 40px;
+    border-radius: 5px;
+    font-family: sans-serif;
+    color: white;
+    background-color: red;
+}
+
+.alert-info {
+    padding: 15px;
+    padding-left: 40px;
+    border-radius: 5px;
+    font-family: sans-serif;
+    color: white;
+    background-color: teal;
+}
+
+/* the styles for the nav bar */
+nav{
+    background-color: rgb(189, 205, 221);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+nav ul li {
+    float: left;
+    padding: 0 12px;
+}
+nav ul li a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    padding: 1em 0;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+/* the styles for the labels and inputs */
+label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+}
+input {
+    width: 40%;
+    padding: 10px;
+    margin: 10px;
+    box-sizing: border-box;
+    display: inline-block;
+    border: 1px solid #afafaf;
+    border-radius: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+/* the styles for the login page */
+.loginBody {
+    background-color: rgb(224, 224, 224);
+}
+.loginCont {
+    margin: auto;
+    margin-top: 5%;
+    height: 40%;
+    width: 40%;
+    border-radius: 10px;
+    border: 2px solid silver;
+    background-color: white;
+    overflow: scroll; 
+    text-align: center;
+    padding: 40px;
+    padding-top: 20px;
+    box-shadow: 0px 0px 8px #cccbcb;
+}
+.loginCenter {
+    padding: 36px;
+}
+.loginCenter div {
+    display: block;
+    box-sizing: border-box;
+    padding: 20px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+}
+.loginCenter input[type="text"], .loginCenter input[type="password"] {
+    width: 90%;
+    font-weight: 50;
+}
+.loginCenter [type="submit"] {
+    width: 25%;
+    height: 40px;
+    border: 1px solid;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #51AC74;
+}
+
+/* the styles for the register page */
+.regBody {
+    padding: 20px 0 0 0;
+}
+.regCont {
+    margin-left: 3%;
+    margin-top: 2%;
+    height: 40%;
+    width: 50%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    overflow: scroll; 
+    background-color: white;
+    box-shadow: 0px 0px 8px #cccbcb;
+    padding: 40px;
+    padding-top: 20px;  
+}
+.regCont div {
+    margin: 8px;
+}
+.regCont input {
+    width: 50%;
+}
+.regCont label {
+    font-size: 15px;
+}
+.regCont [type="submit"] {
+    width: 30%;
+    height: 40px;
+    border: 1px solid;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #51AC74;
+}
+
+/* the styles for the home page */
+.homeTitle {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+}
+
+/* the styles for the profile page */
+.profileBody {
+    padding: 20px 0 0 0;
+}
+.profileCont {
+    margin-left: 3%;
+    margin-top: 2%;
+    height: 50%;
+    width: 90%;
+    border: 2px solid silver;
+    border-radius: 10px;
+    overflow: scroll; 
+    background-color: white;
+    box-shadow: 0px 0px 8px #cccbcb;
+    padding: 40px;
+    padding-top: 20px;  
+}
+.profileCont label {
+    font-size: 15px;
+}
+.profileCont .pwLabel {
+    padding: 30px 0 5px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration-line: underline;
+}
+
+/* the styles for the create roles page */
+.crBody {
+    padding-left: 3%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.crCont {
+    padding-left: 1%;
+}
+.crCont input {
+    width: 20%;
+}
+
+/* the styles for the list roles page */
+.lrBody {
+    padding-left: 3%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.lrCont input {
+    width: 15%;
+}
+.lrBody table {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 4%;
+}
+.lrBody table th {
+    padding-right: 25px;
+}
+.lrBody td input {
+    width: 100%;
+}
+
+/* the styles for the assign roles page */
+.arBody {
+    padding-left: 3%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.arBody .tableHeader{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.arBody .assignTable{
+    width: 50%;
+}
+.arCont input {
+    padding-left: 1%;
+    width: 15%;
+}
