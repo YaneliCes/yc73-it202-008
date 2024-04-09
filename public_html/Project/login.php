@@ -1,26 +1,18 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 ?>
-<body class="loginBody">
+<div class="container-fluid loginBody">
     <!-- yc73 4/1/23 -->
     <form onsubmit="return validate(this)" method="POST">
         <div class="loginCont">
             <div class="loginCenter">
-                <div>
-                    <label for="email">Email/Username</label>
-                    <input type="text" name="email" required />
-                </div>
-                <div>
-                    <label for="pw">Password</label>
-                    <input type="password" id="pw" name="password" required minlength="8" />
-                </div>
-                <div>
-                    <input type="submit" value="Login" />
-                </div>
+                <?php render_input(["type" => "text", "id" => "email", "name" => "email", "label" => "Email/Username", "rules" => ["required" => true]]); ?>
+                <?php render_input(["type" => "password", "id" => "password", "name" => "password", "label" => "Password", "rules" => ["required" => true, "minlength" => 8]]); ?>
+                <?php render_button(["text" => "Login", "type" => "submit"]); ?>
             </div>
         </div>
     </form>
-</body>
+</div>
 <script>
     /* yc73 4/1/23 */
     function validate(form) {
@@ -90,14 +82,14 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         if (!is_valid_email($email)) {
             flash("Invalid email address", "danger");
             $hasError = true;
-        }
-    
+        }  
     } else {
         if (!is_valid_username($email)) {
             flash("Invalid username", "danger");
             $hasError = true;
         }
     }
+    
     if (empty($password)) {
         flash("Password must not be empty", "danger");
         $hasError = true;
