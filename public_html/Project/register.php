@@ -2,29 +2,15 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
-<div class="regBody">
+<div class="container-fluid regBody">
     <!-- yc73 4/1/23 -->
     <form onsubmit="return validate(this)" method="POST">
-        <div class="regCont">
-            <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''?>" required />
-            </div>
-            <div>
-                <label for="username">Username</label>
-                <input type="text" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''?>" required maxlength="30" />
-            </div>
-            <div>
-                <label for="pw">Password</label>
-                <input type="password" id="pw" name="password" required minlength="8" />
-            </div>
-            <div>
-                <label for="confirm">Confirm</label>
-                <input type="password" name="confirm" required minlength="8" />
-            </div>
-            <input type="submit" value="Register" />
-        </div>
-    </form>
+    <?php render_input(["type"=>"email", "id"=>"email", "name"=>"email", "label"=>"Email", "rules"=>["required"=>true]]);?>
+    <?php render_input(["type"=>"text", "id"=>"username", "name"=>"username", "label"=>"Username", "rules"=>["required"=>true, "maxlength"=>30]]);?>
+    <?php render_input(["type"=>"password", "id"=>"password", "name"=>"password", "label"=>"Password", "rules"=>["required"=>true, "minlength"=>8]]);?>
+    <?php render_input(["type"=>"password", "id"=>"confirm", "name"=>"confirm", "label"=>"Confirm Password", "rules"=>["required"=>true,"minlength"=>8]]);?>
+    <?php render_button(["text"=>"Register", "type"=>"submit"]);?>
+</form>
 </div>
 <script>
     /* yc73 4/1/23 */
@@ -134,7 +120,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         try {
             $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
             flash("Successfully registered!", "success");
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             users_check_duplicate($e->errorInfo);
         }
     }
