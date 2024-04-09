@@ -4,9 +4,13 @@ require_once(__DIR__ . "/../../partials/nav.php");
 <div class="container-fluid loginBody">
     <!-- yc73 4/1/23 -->
     <form onsubmit="return validate(this)" method="POST">
-        <?php render_input(["type" => "text", "id" => "email", "name" => "email", "label" => "Email/Username", "rules" => ["required" => true]]); ?>
-        <?php render_input(["type" => "password", "id" => "password", "name" => "password", "label" => "Password", "rules" => ["required" => true, "minlength" => 8]]); ?>
-        <?php render_button(["text" => "Login", "type" => "submit"]); ?>
+        <div class="loginCont">
+            <div class="loginCenter">
+                <?php render_input(["type" => "text", "id" => "email", "name" => "email", "label" => "Email/Username", "rules" => ["required" => true]]); ?>
+                <?php render_input(["type" => "password", "id" => "password", "name" => "password", "label" => "Password", "rules" => ["required" => true, "minlength" => 8]]); ?>
+                <?php render_button(["text" => "Login", "type" => "submit"]); ?>
+            </div>
+        </div>
     </form>
 </div>
 <script>

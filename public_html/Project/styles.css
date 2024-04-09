@@ -77,9 +77,11 @@ input {
 }
 
 /* the styles for the login page */
+/*
 .loginBody {
     background-color: rgb(224, 224, 224);
 }
+*/
 .loginCont {
     margin: auto;
     margin-top: 5%;
@@ -194,6 +196,7 @@ input {
 
 /* the styles for the create roles page */
 .crBody {
+    margin-top: 2%;
     padding-left: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -209,7 +212,9 @@ input {
 
 /* the styles for the list roles page */
 .lrBody {
+    margin-top: 2%;
     padding-left: 3%;
+    padding-right: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .lrCont input {
@@ -231,7 +236,9 @@ input {
 
 /* the styles for the assign roles page */
 .arBody {
+    margin-top: 2%;
     padding-left: 3%;
+    padding-right: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .arBody .tableHeader{
