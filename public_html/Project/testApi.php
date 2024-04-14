@@ -10,21 +10,71 @@ if (isset($_GET["keyword"])) {
     $rapidAPIHost = "ikea-api.p.rapidapi.com";
     //$result = get($endpoint, "STORE_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
     //example of cached data to save the quotas, don't forget to comment out the get() if using the cached data for testing
-    $result = ["status" => 200, "response" => '{
-        
-            "api_id": "80275887",
-            "name": "KALLAX",
-            "price": "79.99",
-            "measurement": "30 1/8x57 5/8",
-            "typeName": "Shelf unit",
-            "image": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__0644757_pe702939_s5.jpg",
-            "contextualImageUrl": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__1051325_pe845148_s5.jpg",
-            "imageAlt": "KALLAX Shelf unit, white, 30 1/8x57 5/8",
-            "url": "https://www.ikea.com/us/en/p/kallax-shelf-unit-white-80275887/",
-            "categoryPath": "Living room & entryway tables"
-        
-    }'];
+   
+/*
+    $result = ["status" => 200, "response" => '[{
 
+        "id": "80275887"
+        "name": "KALLAX",
+        "price": "79.99",
+        "measurement": "30 1/8x57 5/8 ",
+        "typeName": "Shelf unit",
+        "image": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__0644757_pe702939_s5.jpg",
+        "contextualImageUrl": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__1051325_pe845148_s5.jpg",
+        "imageAlt": "KALLAX Shelf unit, white, 30 1/8x57 5/8 ",
+        "url": "https://www.ikea.com/us/en/p/kallax-shelf-unit-white-80275887/",
+        "categoryPath": "Living room & entryway tables",
+        
+    
+    }]'];
+*/
+/*
+    ,
+    {
+        
+        "name": "DKAJSDK",
+        "price": "79.99",
+        "measurement": "30 1/8x57 5/8 \"",
+        "typeName": "Shelf unit",
+        "image": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__0644757_pe702939_s5.jpg",
+        "contextualImageUrl": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__1051325_pe845148_s5.jpg",
+        "imageAlt": "KALLAX Shelf unit, white, 30 1/8x57 5/8 \"",
+        "url": "https://www.ikea.com/us/en/p/kallax-shelf-unit-white-80275887/",
+        "categoryPath": "Living room & entryway tables",
+        "api_id": "91275887"
+    
+    },
+    {
+        
+        "name": "JSFKAFF",
+        "price": "79.99",
+        "measurement": "30 1/8x57 5/8 \"",
+        "typeName": "Shelf unit",
+        "image": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__0644757_pe702939_s5.jpg",
+        "contextualImageUrl": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__1051325_pe845148_s5.jpg",
+        "imageAlt": "KALLAX Shelf unit, white, 30 1/8x57 5/8 \"",
+        "url": "https://www.ikea.com/us/en/p/kallax-shelf-unit-white-80275887/",
+        "categoryPath": "Living room & entryway tables",
+        "api_id": "73275887"
+    
+    },
+    {
+        
+        "name": "LKDJFLS",
+        "price": "79.99",
+        "measurement": "30 1/8x57 5/8 \"",
+        "typeName": "Shelf unit",
+        "image": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__0644757_pe702939_s5.jpg",
+        "contextualImageUrl": "https://www.ikea.com/us/en/images/products/kallax-shelf-unit-white__1051325_pe845148_s5.jpg",
+        "imageAlt": "KALLAX Shelf unit, white, 30 1/8x57 5/8 \"",
+        "url": "https://www.ikea.com/us/en/p/kallax-shelf-unit-white-80275887/",
+        "categoryPath": "Living room & entryway tables",
+        "api_id": "23275887"
+    
+    }]'];
+*/
+
+    
     error_log("Response: " . var_export($result, true));
     if (se($result, "status", 400, false) == 200 && isset($result["response"])) {
         $result = json_decode($result["response"], true);
@@ -35,6 +85,73 @@ if (isset($_GET["keyword"])) {
 
 
 
+/*
+if (isset($items)) {
+*/
+
+
+
+$items = $result;
+    $apiIdCount = [];
+    foreach (array_keys($items) as $array) {
+        $key = $items[$array];
+        
+        if (isset($key['id'])) {
+            $items[$array]['api_id'] = $key['id'];
+            unset($items[$array]['id']);
+        }
+        if (is_array($key['price']) && isset($key['price']['currentPrice'])) {
+            $items[$array]['price'] = $key['price']['currentPrice'];
+        }
+        
+        $items[$array]['measurement'] = str_replace('"', '', $key['measurement']);
+
+        $items[$array]['imageAlt'] = str_replace('"', '', $key['imageAlt']);
+        
+        if (is_array($key['categoryPath']) && isset($key['categoryPath'][1]['name'])) {
+            $items[$array]['categoryPath'] = $key['categoryPath'][1]['name'];
+        }
+        if (is_array($key['variants'])) {
+            unset($items[$array]['variants']);           
+        }
+        if (!isset($key['contextualImageUrl'])) {
+            $items[$array]['contextualImageUrl'] = '';
+        }
+    }
+$result = $items;
+
+
+
+
+/*$items[$array]['variants'] = '';*/   
+
+/*
+function replaceArrayKey($array, $oldKey, $newKey){
+    if(!isset($array[$oldKey])){
+        return $array;
+    }
+    $arrayKeys = array_keys($array);
+    $oldKeyIndex = array_search($oldKey, $arrayKeys);
+    $arrayKeys[$oldKeyIndex] = $newKey;
+    $newArray =  array_combine($arrayKeys, $array);
+    return $newArray;
+}
+*/
+
+/*
+}
+*/
+
+/* array_push($params, [":$k"=>$v]); */
+//per record
+/*
+foreach($items as $k => $v) {
+    array_push($columns, "`$k`");
+    $params[":$k"] = $v;
+}
+*/
+//
+
 $db = getDB();
 $query = "INSERT INTO `Products` ";
 $columns = [];
@@ -42,12 +159,31 @@ $params = [];
 
 foreach($result as $index => $row) {
     foreach ($row as $k => $v) {
-        array_push($columns, "$k");
+        if($index === 0){
+            $columns[] = $k;
+        }
         $params[":$k$index"] = $v;
     }
 }
-$query .= "(" . join(",", $columns) . ")";
-$query .= "VALUES (" . join(",", array_keys($params)) . ")";
+
+$query .= "(" . join(",", $columns) . ") ";
+$query .= "VALUES ";
+
+foreach ($result as $index => $row) {
+    $rowValues = [];
+    foreach ($row as $k => $v) {
+        $rowValues[] = ":$k$index";
+    }
+    $query .= "(" . join(",", $rowValues) . ")";
+    if ($index < count($result) - 1) {
+        $query .= ",";
+    }
+}
+
+$query .= " ON DUPLICATE KEY update api_id = api_id";
+
+
+
 var_export($query);
 try {
     $stmt = $db-> prepare($query);
@@ -58,6 +194,11 @@ try {
     flash("An error occured", "danger");
 }
 
+/*
+$query .= "VALUES (" . join(",", $columns) . ")";
+$query .= "VALUES (" . join(",", array_keys($params)) . ")";
+$columns .= "(columns) VALUES";
+*/
 
 ?>
 <div class="container-fluid">

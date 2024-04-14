@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `Products` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `api_id` VARCHAR(20) UNIQUE,
-    `name` VARCHAR(32) UNIQUE,
+    `name` VARCHAR(32),
     `price` DECIMAL(7,2),
     `measurement` VARCHAR(75),
     `typeName` VARCHAR(100),
