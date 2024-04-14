@@ -31,7 +31,6 @@ if (isset($_GET["keyword"])) {
 /*
     ,
     {
-        
         "name": "DKAJSDK",
         "price": "79.99",
         "measurement": "30 1/8x57 5/8 \"",
@@ -44,8 +43,7 @@ if (isset($_GET["keyword"])) {
         "api_id": "91275887"
     
     },
-    {
-        
+    {   
         "name": "JSFKAFF",
         "price": "79.99",
         "measurement": "30 1/8x57 5/8 \"",
@@ -59,7 +57,6 @@ if (isset($_GET["keyword"])) {
     
     },
     {
-        
         "name": "LKDJFLS",
         "price": "79.99",
         "measurement": "30 1/8x57 5/8 \"",
@@ -88,8 +85,6 @@ if (isset($_GET["keyword"])) {
 /*
 if (isset($items)) {
 */
-
-
 
 $items = $result;
     $apiIdCount = [];
@@ -121,36 +116,6 @@ $items = $result;
 $result = $items;
 
 
-
-
-/*$items[$array]['variants'] = '';*/   
-
-/*
-function replaceArrayKey($array, $oldKey, $newKey){
-    if(!isset($array[$oldKey])){
-        return $array;
-    }
-    $arrayKeys = array_keys($array);
-    $oldKeyIndex = array_search($oldKey, $arrayKeys);
-    $arrayKeys[$oldKeyIndex] = $newKey;
-    $newArray =  array_combine($arrayKeys, $array);
-    return $newArray;
-}
-*/
-
-/*
-}
-*/
-
-/* array_push($params, [":$k"=>$v]); */
-//per record
-/*
-foreach($items as $k => $v) {
-    array_push($columns, "`$k`");
-    $params[":$k"] = $v;
-}
-*/
-//
 
 $db = getDB();
 $query = "INSERT INTO `Products` ";
@@ -194,11 +159,7 @@ try {
     flash("An error occured", "danger");
 }
 
-/*
-$query .= "VALUES (" . join(",", $columns) . ")";
-$query .= "VALUES (" . join(",", array_keys($params)) . ")";
-$columns .= "(columns) VALUES";
-*/
+
 
 ?>
 <div class="container-fluid">
