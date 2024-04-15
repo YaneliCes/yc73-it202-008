@@ -8,7 +8,7 @@ if (isset($_GET["keyword"])) {
     $endpoint = "https://ikea-api.p.rapidapi.com/keywordSearch";
     $isRapidAPI = true;
     $rapidAPIHost = "ikea-api.p.rapidapi.com";
-    //$result = get($endpoint, "STORE_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
+    $result = get($endpoint, "STORE_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
     //example of cached data to save the quotas, don't forget to comment out the get() if using the cached data for testing
    
 /*
@@ -87,7 +87,6 @@ if (isset($items)) {
 */
 
 $items = $result;
-    $apiIdCount = [];
     foreach (array_keys($items) as $array) {
         $key = $items[$array];
         
