@@ -266,15 +266,17 @@ input {
 }
 
 /* the styles for the create product page */
-
+.cr-form {
+    margin-top: 2%;
+}
 .whole-crProd-form {
     margin-top: 2%;
     margin-bottom: 3%;
 }
-.crProd-title {
+.crProd_title {
     margin-bottom: 1%;
     margin-left: 2%;
-    padding-top: 2%;
+    padding-top: 2% !important;
 }
 /*
 .card {

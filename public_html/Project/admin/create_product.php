@@ -2,75 +2,111 @@
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
-/* yc73 4/14/23 */
+/* yc73 4/1/23 */
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 ?>
 
-
-
 <?php
-//TODO handle product fetch
-    if(isset($_POST["action"])) {
+    /* yc73 4/12/23 */
+    if (isset($_POST["action"])) {
         $action = $_POST["action"];
+        $keyword =  strtoupper(se($_POST, "keyword", "", false));
+        $apiID =  strtoupper(se($_POST, "api_id", "", false));
         $quote = [];
-        //fetch logic
-        if ($action === "fetch") {
-            $keyword = strtoupper(se($_POST, "keyword", "", false));
+        if ($action === "fetch") { 
             if ($keyword) {
                 $result = fetch_quote($keyword);
-                error_log("Data from API" . var_export($result, true));
-                if($result) {
-                    $quote = $result;
+                //error_log("Data from API" . var_export($result, true));
+                if ($result) {
+                    foreach ($result as $key => $item) {
+                        $item["is_api"] = 1;
+                        $quote[] = $item;
+                    }
                 }
             }
-        }
+        } 
 
-        // create logic
+        /* yc73 4/12/23 */
         else if ($action === "create") {
-            foreach($_POST as $k=>$v) {
-                if (in_array($k, ["api_id", "name", "price", "measurement", "typeName", "image", "contextualImageUrl", "imageAlt", "url", "categoryPath", "stock"])) {
-                    $quote[$k] = $v; // Add key-value pair to $quote
+            if ($apiID) {
+                $productData = [];
+                //error_log("post info: " . var_dump($_POST));
+                foreach ($_POST as $k => $v) {
+                    if (in_array($k, ["api_id", "name", "price", "measurement", "typeName", "image", "contextualImageUrl", "imageAlt", "url", "categoryPath", "stock"])) {
+                        $productData[$k] = $v;
+                    }
                 }
-                error_log("Cleaned up POST: " . var_export($quote, true)); 
-            } 
-            //insert data             
-            $db = getDB();
-            $query = "INSERT INTO `Products` ";
-            $columns = [];
-            $params = [];
-            //per record
-            foreach ($quote as $k => $v) {
-                array_push($columns, "`$k`");
-                $params[":$k"] = $v;
+                $productData["is_api"] = 1;
+                $quote = [$productData];
+                error_log("Cleaned up POST: " . var_export($quote, true));
             }
-            $query .= "(" . join(",", $columns) . ")";
-            $query .= "VALUES (" . join(",", array_keys($params)) . ")";
-            error_log("Query: " . $query);
-            error_log("Params: " . var_export($params, true));
-            try {
-                $stmt = $db->prepare($query);
-                $stmt->execute($params);
-                flash("Inserted record " . $db->lastInsertId(), "success");
-            } catch (PDOException $e) {
-                error_log("Something broke with the query" . var_export($e, true));
-                flash("An error occurred", "danger");
+                //error_log("post info after: " . var_dump($_POST));
+        }
+        
+        else {
+            flash("You must provide a keyword", "warning");
+        }
+
+        /* yc73 4/12/23 */
+        //insert data
+        $db = getDB();
+        $query = "INSERT INTO `ProductSample` ";
+        $columns = [];
+        $params = [];
+        //per record
+        foreach($quote as $index => $row) {
+            
+            foreach ($row as $k => $v) {
+                if($index === 0){
+                    $columns[] = $k;
+                }
+                $params[":$k$index"] = $v;
             }
         }
 
-        else {
-            flash("You must provide a product keyword", "warning");
+        //error_log("Data: " . var_dump($quote));
+
+        $query .= "(" . join(",", $columns) . ") ";
+        $query .= "VALUES ";
+
+        foreach ($quote as $index => $row) {
+            $rowValues = [];
+            foreach ($row as $k => $v) {
+                $rowValues[] = ":$k$index";
+            }
+            $query .= "(" . join(",", $rowValues) . ")";
+            if ($index < count($quote) - 1) {
+                $query .= ",";
+            }
         }
+        
+        error_log("Query: " . $query);
+        error_log("Params: " . var_export($params, true));
+
+       if ($action === "fetch") {
+            $query .= " ON DUPLICATE KEY update api_id = api_id";
+        }
+
+        try {
+            $stmt = $db->prepare($query);
+            $stmt->execute($params);
+            flash("Inserted record " . $db->lastInsertId(), "success");
+        } catch (PDOException $e) {
+            error_log("Something broke with the query" . var_export($e, true));
+            flash("An error occurred", "danger");
+        }
+        
     }
 
-
+    
 //TODO handle manual create product
 ?>
 
-<div class="container whole-crProd-form shadow"> <!-- card d-flex justify-content-center -->
-    <h3 class="crProd-title">Add Store Item</h3>
+<div class="container cr-form shadow"> <!-- card d-flex justify-content-center -->
+    <h3 class="crProd_title">Add Store Item</h3>
     <ul class="nav nav-pills crProductTabs shadow-sm" id="myTab">
         <li class="nav-item crProdTab1">
             <a class="nav-link active crProd-navlink" data-bs-toggle="pill" type="button" role="tab"

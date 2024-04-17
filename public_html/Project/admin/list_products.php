@@ -10,7 +10,7 @@ if (!has_role("Admin")) {
 
 
 
-$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock FROM `Products` ORDER BY created DESC LIMIT 25";
+$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock FROM `Products` ORDER BY created DESC LIMIT 50";
 $db = getDB();
 $stmt = $db->prepare($query);
 $results=[];
