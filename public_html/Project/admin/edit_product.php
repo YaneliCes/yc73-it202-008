@@ -79,12 +79,12 @@ if (!has_role("Admin")) {
     }
     else {
         flash("Invalid id passed", "danger");
-        die(header("Location:" . get_url("admin/list_stocks.php")));
+        die(header("Location:" . get_url("admin/list_products.php")));
     }
 
     if($product) {
         $form = [
-            ["type" => "text", "name" => "api_id", "placeholder" => "Product API ID", "label" => "Product API ID", "rules" => ["required" => "required"]],
+            //["type" => "text", "name" => "api_id", "placeholder" => "Product API ID", "label" => "Product API ID", "rules" => ["required" => "required"]],
             ["type" => "text", "name" => "name", "placeholder" => "Product Name", "label" => "Product Name", "rules" => ["required" => "required"]],
             ["type" => "number", "name" => "price", "placeholder" => "Product Price", "label" => "Product Price", "rules" => ["required" => "required"]],
             ["type" => "text", "name" => "measurement", "placeholder" => "Product Measurement", "label" => "Product Measurement", "rules" => ["required" => "required"]],
@@ -113,6 +113,9 @@ if (!has_role("Admin")) {
 ?>
 
 <div class="container editProd-form shadow"> <!-- card d-flex justify-content-center -->
+    <div>
+        <a href="<?php echo get_url("admin/list_products.php"); ?>" class="editProd-back btn btn-secondary">Back</a>
+    </div>
     <h3 class="editProd_title">Edit Store Item</h3>
     
         <form method="POST">

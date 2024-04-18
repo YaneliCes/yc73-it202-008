@@ -53,7 +53,7 @@ if (!has_role("Admin")) {
         /* yc73 4/12/23 */
         //insert data
         $db = getDB();
-        $query = "INSERT INTO `ProductSample` ";
+        $query = "INSERT INTO `Products` ";
         $columns = [];
         $params = [];
         //per record
@@ -101,7 +101,7 @@ if (!has_role("Admin")) {
         
     }
 
-    
+
 //TODO handle manual create product
 ?>
 
