@@ -20,7 +20,7 @@ $form = [
     ["type" => "text", "name" => "categoryPath", "placeholder" => "Category", "label" => "Category", "include_margin" => false],
 
 
-    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["name" => "Name", "price" => "Price", "created" => "Created", "modified" => "Modified"], "include_margin" => false],
+    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["created" => "Created", "modified" => "Modified", "name" => "Name", "price" => "Price"], "include_margin" => false],
     ["type" => "select", "name" => "order", "label" => "Order", "options" => ["asc" => "+", "desc" => "-"], "include_margin" => false],
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
