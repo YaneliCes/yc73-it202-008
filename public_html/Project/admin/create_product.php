@@ -52,6 +52,7 @@ if (!has_role("Admin")) {
 
         /* yc73 4/12/23 */
         //insert data
+/*
         $db = getDB();
         $query = "INSERT INTO `Products` ";
         $columns = [];
@@ -97,6 +98,33 @@ if (!has_role("Admin")) {
         } catch (PDOException $e) {
             error_log("Something broke with the query" . var_export($e, true));
             flash("An error occurred", "danger");
+        }
+*/
+
+        try {
+            //optional options for debugging and duplicate handling
+            $opts =
+                ["debug" => true, "update_duplicate" => false, "columns_to_update" => []];
+            $result = insert("Products", $quote, $opts);
+            if (!$result) {
+                flash("Unhandled error", "warning");
+            } else {
+                //flash("Created record with id " . var_export($result, true), "success");
+                flash("Inserted new product record(s) successfully", "success");
+            }
+        } catch (InvalidArgumentException $e1) {
+            error_log("Invalid arg" . var_export($e1, true));
+            flash("Invalid data passed", "danger");
+        } catch (PDOException $e2) {
+            if ($e2->errorInfo[1] == 1062) {
+                flash("An entry for this product already exists", "warning");
+            } else {
+                error_log("Database error" . var_export($e2, true));
+                flash("Database error", "danger");
+            }
+        } catch (Exception $e3) {
+            error_log("Invalid data records" . var_export($e3, true));
+            flash("Invalid data records", "danger");
         }
         
     }
