@@ -353,6 +353,16 @@ input {
     margin-bottom: 1vw;
     margin: 1vw;
 }
+
+.list-products-container .col select {
+    margin-bottom: 11px !important;
+}
+.list-products-container .row > div:last-child input[type="number"] {
+    width: 75%; /* Adjust the width as needed */
+}
+.list-products-container input[type="submit"] {
+    width: 20%;
+}
 .list-products table {
     width: 100%;
     border-collapse: collapse;
@@ -393,6 +403,9 @@ input {
     padding: 15px;
     padding-bottom: 30px;
     margin-bottom: 10%;
+}
+.editProd-back {
+    margin-top: 2%;
 }
 .editProd_title {
     margin-left: 2%;
@@ -456,6 +469,28 @@ input {
 }
 */
 
+
+
+.viewProd-whole {
+    margin: 20px;
+}
+.viewProd-back {
+    margin: 1% 0 1.5% 0;
+}
+.viewProd-title {
+    margin-bottom: 3%;
+}
+.viewProd-edit a {
+    background-color: #0d6efd;
+    border: #0d6efd;
+}
+.viewProd-delete {
+    margin-left: auto;
+}
+.viewProd-delete a {
+    background-color: #dc3545;
+    border: #dc3545;
+}
 
 
 

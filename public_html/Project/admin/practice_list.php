@@ -9,21 +9,20 @@ if (!has_role("Admin")) {
 
 //build search form
 $form = [
-    
     ["type" => "text", "name" => "name", "placeholder" => "Name", "label" => "Product Name", "include_margin" => false],
 
-    ["type" => "number", "name" => "price_min", "placeholder" => "Min Price", "label" => "Min Price", "step" => "0.01", "include_margin" => false],
-    ["type" => "number", "name" => "price_max", "placeholder" => "Max Price", "label" => "Max Price", "step" => "0.01", "include_margin" => false],
+    ["type" => "number", "name" => "price", "placeholder" => "Price", "label" => "Price", "include_margin" => false],
 
     ["type" => "text", "name" => "typeName", "placeholder" => "Type", "label" => "Type", "include_margin" => false],
 
     ["type" => "text", "name" => "categoryPath", "placeholder" => "Category", "label" => "Category", "include_margin" => false],
 
 
-    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["name" => "Name", "price" => "Price", "created" => "Created", "modified" => "Modified"], "include_margin" => false],
+    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["price" => "Price", "name" => "Name", "category" => "Category", "created" => "Created", "modified" => "Modified"], "include_margin" => false],
     ["type" => "select", "name" => "order", "label" => "Order", "options" => ["asc" => "+", "desc" => "-"], "include_margin" => false],
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
+
 
 ];
 error_log("Form data: " . var_export($form, true));
@@ -56,28 +55,23 @@ if (count($_GET) > 0) {
         }
     }
 
-    //error_log("Data: " . var_dump($form));
-
     //product name
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
-        
         $params[":name"] = "%$name%";
     }
-    //error_log("Data: " . var_dump($query));
-    //error_log("Data: " . var_dump($params));
-    
+
     //price
-    $price_min = se($_GET, "price_min", "-1", false);
+    $price_min = se($_GET, "price", "-1", false);
     if (!empty($price_min) && $price_min > -1) {
-        $query .= " AND price >= :price_min";
-        $params[":price_min"] = $price_min;
+        $query .= " AND price >= :price";
+        $params[":price"] = $price_min;
     }
-    $price_max = se($_GET, "price_max", "-1", false);
+    $price_max = se($_GET, "price", "-1", false);
     if (!empty($price_max) && $price_max > -1) {
-        $query .= " AND price <= :price_max";
-        $params[":price_max"] = $price_max;
+        $query .= " AND price <= :price";
+        $params[":price"] = $price_max;
     }
 
     //product type
@@ -123,9 +117,11 @@ if (count($_GET) > 0) {
 
 
 
+$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock FROM `Products` ORDER BY created DESC LIMIT 50";
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
+error_log("Data result: " . var_dump($results));
 try {
     $stmt->execute($params);
     $r = $stmt->fetchAll();
@@ -138,8 +134,7 @@ try {
 }
 
 $table = [
-    "data" => $results, /*"title" => "Latest Stocks",*/ "ignored_columns" => ["id", "api_id", "measurement", "image", "contextualImageUrl", "imageAlt", "url"],
-    "view_url" => get_url("admin/view_product.php"),
+    "data" => $results, /*"title" => "Latest Stocks",*/ "ignored_columns" => ["id"],
     "edit_url" => get_url("admin/edit_product.php"),
     "delete_url" => get_url("admin/delete_product.php")
 ];
@@ -157,6 +152,7 @@ $table = [
                         <?php render_input($v); ?>
                     </div>
                 <?php endforeach; ?>
+
             </div>
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
