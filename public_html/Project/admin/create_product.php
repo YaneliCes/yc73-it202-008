@@ -10,12 +10,13 @@ if (!has_role("Admin")) {
 ?>
 
 <?php
-    /* yc73 4/12/23 */
     if (isset($_POST["action"])) {
         $action = $_POST["action"];
         $keyword =  strtoupper(se($_POST, "keyword", "", false));
         $apiID =  strtoupper(se($_POST, "api_id", "", false));
         $quote = [];
+        /* yc73 4/12/23 */
+        /* fetch logic */
         if ($action === "fetch") { 
             if ($keyword) {
                 $result = fetch_quote($keyword);
@@ -30,6 +31,7 @@ if (!has_role("Admin")) {
         } 
 
         /* yc73 4/12/23 */
+        /* create product logic */
         else if ($action === "create") {
             if ($apiID) {
                 $productData = [];
@@ -146,7 +148,9 @@ if (!has_role("Admin")) {
         </li>
     </ul>
     <div id="fetch" class="tab-target cr-tab-content cr-tab-fetch">
-        <form method=POST>                                
+        <!-- yc73 4/15/23 -->
+        <!-- fetch form -->
+        <form onsubmit="return validateFetch(this)" method=POST>                                
                                                            
             <?php render_input(["type" => "search", "name" => "keyword", "placeholder" => "Product", "rules" => ["required" => "required"]]); ?>
             <?php render_input(["type" => "hidden", "name" => "action", "value" => "fetch"]); ?>
@@ -154,6 +158,8 @@ if (!has_role("Admin")) {
         </form>
     </div>
     <div id="create" class="tab-target cr-tab-content cr-tab-create" style="display: none;">
+        <!-- yc73 4/15/23 -->
+        <!-- create form -->
         <form onsubmit="return validate(this)" method=POST>
 
             <?php render_input(["type" => "text", "name" => "api_id", "placeholder" => "Product API ID", "label" => "Product API ID", "rules" => ["required" => "required"]]); ?>
@@ -175,7 +181,29 @@ if (!has_role("Admin")) {
     </div>
 </div>
 
+
 <script>
+    /* yc73 4/15/23 */
+    /* fetch form js validation */
+    function validateFetch(form) {
+        //TODO 1: implement JavaScript validation
+        //ensure it returns false for an error and true for success
+        let is_valid = true;
+        const keyword = form.keyword.value;
+
+        if (keyword.length === 0) {
+            flash("Keyword must not be empty (JS)", "warning");
+            is_valid = false;
+        }
+
+        return is_valid;
+    }
+</script>
+
+
+<script>
+    /* yc73 4/15/23 */
+    /* create form js validation */
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
@@ -322,8 +350,28 @@ if (!has_role("Admin")) {
 </script>
 
 
+
 <?php
 /* yc73 4/15/23 */
+/* fetch form php validation */
+//TODO 2: add PHP Code
+if (isset($_POST["keyword"])) {
+    $keyword = se($_POST, "kayword", "", false);
+
+    //TODO 3
+    $hasError = false;
+
+    if (empty($keyword)) {
+        flash("Keyword must not be empty", "danger");
+        $hasError = true;
+    }
+}
+?>
+
+
+<?php
+/* yc73 4/15/23 */
+/* create form php validation */
 //TODO 2: add PHP Code
 if (isset($_POST["api_id"]) && isset($_POST["name"]) && isset($_POST["price"]) && isset($_POST["measurement"]) && isset($_POST["typeName"]) && isset($_POST["image"]) && isset($_POST["contextualImageUrl"]) && isset($_POST["imageAlt"]) && isset($_POST["url"]) && isset($_POST["categoryPath"]) && isset($_POST["stock"])) {
     $api_id = se($_POST, "api_id", "", false);
