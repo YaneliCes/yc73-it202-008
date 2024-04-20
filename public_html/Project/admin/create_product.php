@@ -102,7 +102,8 @@ if (!has_role("Admin")) {
             flash("An error occurred", "danger");
         }
 */
-
+        /* yc73 4/12/23 */
+        /* insert data logic */
         try {
             //optional options for debugging and duplicate handling
             $opts =
@@ -256,6 +257,8 @@ if (!has_role("Admin")) {
             }
         }
         
+        /* yc73 4/15/23 */
+        /* create form js validation */
         if (measurement.length === 0) {
             flash("Measurement must not be empty (JS)", "warning");
             is_valid = false;
@@ -309,6 +312,8 @@ if (!has_role("Admin")) {
             is_valid = false;
         }
         
+        /* yc73 4/15/23 */
+        /* create form js validation */
         if (url.length === 0) {
             flash("Product url must not be empty (JS)", "warning");
             is_valid = false;
@@ -416,6 +421,8 @@ if (isset($_POST["api_id"]) && isset($_POST["name"]) && isset($_POST["price"]) &
         $hasError = true;
     }
 
+    /* yc73 4/15/23 */
+    /* create form php validation */
     if (empty($measurement)) {
         flash("Measurement must not be empty", "danger");
         $hasError = true;

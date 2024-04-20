@@ -7,6 +7,7 @@ if (!has_role("Admin")) {
     die(header("Location: $BASE_PATH" . "/home.php"));
 }
 
+/* yc73 4/12/23 */
 //build search form
 $form = [
     
@@ -28,7 +29,8 @@ $form = [
 ];
 error_log("Form data: " . var_export($form, true));
 
-
+/* yc73 */
+/* 4/12/23 */
 $query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
@@ -58,6 +60,8 @@ if (count($_GET) > 0) {
 
     //error_log("Data: " . var_dump($form));
 
+    /* yc73 */
+    /* 4/12/23 */
     //product name
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
@@ -122,7 +126,8 @@ if (count($_GET) > 0) {
 
 
 
-
+/* yc73 */
+/* 4/12/23 */
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
