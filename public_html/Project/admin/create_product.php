@@ -361,7 +361,7 @@ if (!has_role("Admin")) {
 /* fetch form php validation */
 //TODO 2: add PHP Code
 if (isset($_POST["keyword"])) {
-    $keyword = se($_POST, "kayword", "", false);
+    $keyword = se($_POST, "keyword", "", false);
 
     //TODO 3
     $hasError = false;
