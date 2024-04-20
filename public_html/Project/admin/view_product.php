@@ -9,13 +9,17 @@ if (!has_role("Admin")) {
 ?>
 
 <?php
+/* yc73 4/12/23 */
+/* fetching id */
 $id = se($_GET, "id", -1, false);
 
 
 $product = [];
 if ($id > -1) {
+    /* yc73 4/12/23 */
     //fetch
     $db = getDB();
+    //query
     $query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, created, modified FROM `Products` WHERE id = :id";
     try {
         $stmt = $db->prepare($query);
@@ -48,7 +52,7 @@ foreach ($product as $key => $value) {
         <!-- https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg -->
         <!-- <div class="card mx-auto" style="width: 60rem;"> -->
             
-
+        <!-- yc73 4-15-23 -->
         <div class="row mt-4">
             <div class="col-md-6">
                 <section id="carousel" class="gallery-carousel pt-3 bg-light w-50 mx-auto">

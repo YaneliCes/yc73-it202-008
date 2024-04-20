@@ -12,6 +12,7 @@ if (!has_role("Admin")) {
 
 
 <?php
+    /* yc73 4/14/23 */
     $id = se($_GET, "id", -1, false);
 
     //TODO handle product fetch
@@ -50,6 +51,8 @@ if (!has_role("Admin")) {
         try {
             $stmt = $db->prepare($query);
             $stmt->execute($params);
+            /* yc73 4/14/23 */
+            /* success message*/
             flash("Updated record ", "success");
         } catch (PDOException $e) {
             error_log("Something broke with the query" . var_export($e, true));
@@ -82,6 +85,8 @@ if (!has_role("Admin")) {
         die(header("Location:" . get_url("admin/list_products.php")));
     }
 
+    /* yc73 4/14/23 */
+    /* edit product form */
     if($product) {
         $form = [
             //["type" => "text", "name" => "api_id", "placeholder" => "Product API ID", "label" => "Product API ID", "rules" => ["required" => "required"]],
@@ -128,6 +133,8 @@ if (!has_role("Admin")) {
 </div>
 
 <script>
+    /* yc73 4/14/23 */
+    /* edit form validation */
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
@@ -191,7 +198,8 @@ if (!has_role("Admin")) {
                 is_valid = false;
             }
         }
-
+        /* yc73 4/14/23 */
+        /* edit form validation */
         if (img.length === 0) {
             flash("Image url must not be empty (JS)", "warning");
             is_valid = false;
@@ -264,8 +272,10 @@ if (!has_role("Admin")) {
 
 <?php
 /* yc73 4/15/23 */
+/* edit form php validation */
 //TODO 2: add PHP Code
-if (isset($_POST["name"]) && isset($_POST["price"]) && isset($_POST["measurement"]) && isset($_POST["typeName"]) && isset($_POST["image"]) && isset($_POST["contextualImageUrl"]) && isset($_POST["imageAlt"]) && isset($_POST["url"]) && isset($_POST["categoryPath"]) && isset($_POST["stock"])) {
+if (isset($_POST["name"]) && isset($_POST["price"]) && isset($_POST["measurement"]) && isset($_POST["typeName"]) && isset($_POST["image"]) && 
+isset($_POST["contextualImageUrl"]) && isset($_POST["imageAlt"]) && isset($_POST["url"]) && isset($_POST["categoryPath"]) && isset($_POST["stock"])) {
     $name = se($_POST, "name", "", false);
     $price = se($_POST, "price", "", false);
     $measurement = se($_POST, "measurement", "", false);
@@ -315,7 +325,8 @@ if (isset($_POST["name"]) && isset($_POST["price"]) && isset($_POST["measurement
         flash("Invalid product type: only up to 100 characters", "danger");
         $hasError = true;
     }
-        
+    /* yc73 4/15/23 */
+    /* edit form php validation */
     if (empty($image)) {
         flash("Image url must not be empty", "danger");
         $hasError = true;
