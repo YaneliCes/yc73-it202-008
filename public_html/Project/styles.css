@@ -1,3 +1,4 @@
+/*
 .alert-success {
     padding: 15px;
     padding-left: 40px;
@@ -33,27 +34,25 @@
     color: white;
     background-color: teal;
 }
+*/
 
 /* the styles for the nav bar */
 nav{
     background-color: rgb(189, 205, 221);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 15px;
-
+}
+nav .navbar-brand {
+    margin-left: 2vw;
 }
 nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 nav ul li {
-    float: left;
     padding: 0 12px;
 }
 nav ul li a {
-    display: block;
-    width: 100px;
     text-align: center;
     padding: 1em 0;
     text-decoration: none;
@@ -79,13 +78,14 @@ input {
 }
 
 /* the styles for the login page */
+/*
 .loginBody {
     background-color: rgb(224, 224, 224);
 }
+*/
 .loginCont {
     margin: auto;
     margin-top: 5%;
-    height: 40%;
     width: 40%;
     border-radius: 10px;
     border: 2px solid silver;
@@ -98,6 +98,7 @@ input {
 }
 .loginCenter {
     padding: 36px;
+    padding-bottom: 1%;
 }
 .loginCenter div {
     display: block;
@@ -106,13 +107,17 @@ input {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 17px;
 }
+.loginCenter div label {
+    font-size: calc(13px + 0.6vw) !important;
+    margin-left: auto;
+    margin-right: auto;
+}
 .loginCenter input[type="text"], .loginCenter input[type="password"] {
     width: 90%;
     font-weight: 50;
 }
 .loginCenter [type="submit"] {
     width: 25%;
-    height: 40px;
     border: 1px solid;
     border-radius: 15px;
     font-size: 16px;
@@ -128,7 +133,6 @@ input {
 .regCont {
     margin-left: 3%;
     margin-top: 2%;
-    height: 40%;
     width: 50%;
     border: 2px solid silver;
     border-radius: 10px;
@@ -146,6 +150,9 @@ input {
 }
 .regCont label {
     font-size: 15px;
+}
+.regEmail {
+    margin-top: 4% !important;
 }
 .regCont [type="submit"] {
     width: 30%;
@@ -171,7 +178,6 @@ input {
 .profileCont {
     margin-left: 3%;
     margin-top: 2%;
-    height: 50%;
     width: 90%;
     border: 2px solid silver;
     border-radius: 10px;
@@ -186,14 +192,17 @@ input {
 }
 .profileCont .pwLabel {
     padding: 30px 0 5px 0;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 18px;
+    font-size: 130%;
     font-weight: bold;
     text-decoration-line: underline;
+}
+.profileCont input[type="submit"] {
+    width: 20%
 }
 
 /* the styles for the create roles page */
 .crBody {
+    margin-top: 2%;
     padding-left: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -201,31 +210,41 @@ input {
     padding-left: 1%;
 }
 .crCont input {
-    width: 20%;
+    width: 15%;
+}
+.crCont textarea {
+    width: 40%
 }
 
 /* the styles for the list roles page */
 .lrBody {
+    margin-top: 2%;
     padding-left: 3%;
+    padding-right: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .lrCont input {
-    width: 15%;
+    width: 50%;
+}
+.lrCont input[type="submit"] {
+    width: 10%;
 }
 .lrBody table {
     font-family: Arial, Helvetica, sans-serif;
     padding-left: 4%;
 }
 .lrBody table th {
-    padding-right: 25px;
+    padding-right: 15px;
 }
 .lrBody td input {
-    width: 100%;
+    width: 60%;
 }
 
 /* the styles for the assign roles page */
 .arBody {
+    margin-top: 2%;
     padding-left: 3%;
+    padding-right: 3%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .arBody .tableHeader{
@@ -234,7 +253,284 @@ input {
 .arBody .assignTable{
     width: 50%;
 }
-.arCont input {
+.arCont-top input {
+    padding-left: 1%;
+    width: 10%;
+}
+.arCont-top input[name="username"] {
+    width: 40%;
+}
+.arCont-bottom input {
     padding-left: 1%;
     width: 15%;
 }
+
+/* the styles for the create product page */
+.cr-form {
+    margin-top: 2%;
+}
+.whole-crProd-form {
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+.crProd_title {
+    margin-bottom: 1%;
+    margin-left: 2%;
+    padding-top: 2% !important;
+}
+/*
+.card {
+    max-width: 90vw;
+    padding: 0;
+    border: none;
+    border-radius: 0.5rem;
+}
+*/
+.crProductTabs a.active {
+    border-bottom: 2px solid #55c57a;
+  }
+.crProd-navlink {
+    color: rgb(110, 110, 110);
+    font-weight: 500;
+}
+.crProd-navlink:hover {
+    color: #55c57a;
+}
+.crProductTabs .crProd-navlink.active {
+    color: black;
+    background-color: white !important;
+    border-radius: 0.5rem 0.5rem 0 0;
+    font-weight: 600;
+}
+.cr-tab-fetch .form-control {
+    background-color: rgb(241, 243, 247);
+    border: none;
+    width: 90%; 
+    margin-top: calc(30px + 0.3vw) !important;
+    margin: 0 auto; 
+    background-color: rgb(241, 243, 247);
+    border: none;
+}
+.cr-tab-fetch input[type="submit"] {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    width: 8rem;
+}
+.cr-tab-create {
+    padding-bottom: 1rem;
+    margin-top: calc(15px + 0.3vw);
+}
+.cr-tab-create form {
+    padding: 15px;
+}
+.cr-tab-create .form-label {
+    margin-bottom: 0.8%;
+    margin-left: 2%;
+}
+.cr-tab-create .form-control {
+    width: 90%;
+    margin: auto;
+    margin-bottom: 1.5vw;
+}
+.cr-tab-create input[type="submit"] {
+    margin-left: 2%;
+    width: 10rem;
+    font-size: large;
+}
+
+
+/* the styles for the list products page */
+
+.list-products-container {
+    max-width: 90vw;
+    overflow-x: auto;
+    margin: 0 auto;
+    margin-bottom: 3%;
+}
+.list-products-title {
+    background-color: transparent;
+    padding: 12px;
+    margin-bottom: 1vw;
+    margin: 1vw;
+}
+
+.list-products-container .col select {
+    margin-bottom: 11px !important;
+}
+.list-products-container .row > div:last-child input[type="number"] {
+    width: 75%; /* Adjust the width as needed */
+}
+.list-products-container input[type="submit"] {
+    width: 20%;
+}
+.list-products table {
+    width: 100%;
+    border-collapse: collapse;
+    max-width: 100%;
+    
+}
+.list-products th, .list-products td {
+    padding: 6px; /*cells */
+    white-space: nowrap; 
+    overflow: scroll;
+    max-width: 100px;
+}
+.list-products td div {
+    overflow: auto;
+    max-height: 40px;
+}
+.list-products th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+    font-size: calc(7.5px + 0.5vw) !important;
+}
+.list-products tr th:hover {
+    color: blue !important;
+}
+.list-products tr td:hover, .list-products tr a:hover {
+    color: red !important;
+}
+
+
+
+/* the styles for the edit product page */
+.editProd-form {
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+.editProd-form form {
+    padding: 15px;
+    padding-bottom: 30px;
+    margin-bottom: 10%;
+}
+.editProd-back {
+    margin-top: 2%;
+}
+.editProd_title {
+    margin-left: 2%;
+    padding-top: 3%;
+    padding-bottom: 1%;
+}
+.editProd-form .form-label {
+    margin-bottom: 0.2%;
+    margin-left: 2%;
+}
+.editProd-form .form-control {
+    background-color: rgb(241, 243, 247);
+    border: none;
+    width: 90%; 
+    margin-top: calc(5px + 0.3vw) !important;
+    margin-bottom: calc(10px + 0.9vw) !important;
+    margin: 0 auto; 
+    background-color: rgb(241, 243, 247);
+    border: none;
+}
+.editProd-form input[type="submit"] {
+    margin-left: 2%;
+    font-size: large;
+    width: 10rem;
+}
+
+
+/*
+.cr-tab-create {
+    padding-bottom: 1.3rem;
+    margin-top: calc(30px + 0.3vw);
+}
+.cr-tab-create .form-label {
+    margin-bottom: 0.8%;
+    margin-left: 2%;
+}
+.cr-tab-fetch .form-control {
+    background-color: rgb(241, 243, 247);
+    border: none;
+    width: 90%; 
+    margin-top: calc(30px + 0.3vw) !important;
+    margin: 0 auto; 
+    background-color: rgb(241, 243, 247);
+    border: none;
+}
+.cr-tab-fetch input[type="submit"] {
+    margin-left: 5%;
+    margin-bottom: 3%;
+    width: 8rem;
+}
+.cr-tab-create form {
+    padding: 15px;
+}
+.cr-tab-create .form-control {
+    width: 90%;
+    margin: auto;
+}
+.cr-tab-create input[type="submit"] {
+    margin-left: 5%;
+    width: 10rem;
+}
+*/
+
+
+
+.viewProd-whole {
+    margin: 20px;
+}
+.viewProd-back {
+    margin: 1% 0 1.5% 0;
+}
+.viewProd-title {
+    margin-bottom: 3%;
+}
+.viewProd-edit a {
+    background-color: #0d6efd;
+    border: #0d6efd;
+}
+.viewProd-delete {
+    margin-left: auto;
+}
+.viewProd-delete a {
+    background-color: #dc3545;
+    border: #dc3545;
+}
+
+
+
+
+@media only screen and (max-width: 1200px) {
+    .loginCenter input[type="submit"] {
+        font-size: calc(10px + 0.5vw) !important;
+    }
+}
+
+@media only screen and (max-width: 1090px) {
+    .loginCenter input[type="submit"] {
+        font-size: calc(10px + 0.2vw) !important;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .loginCenter input[type="submit"] {
+        width: calc(10px + 10vw) !important;
+        font-size: calc(10px + 0.2vw) !important;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .loginCont {
+        width: calc(400px + 3vw) !important;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .loginCont {
+        width: calc(300px + 1vw) !important;
+    }
+}
+@media only screen and (max-width: 300px) {
+    .loginCont {
+        width: calc(250px + 0.5vw) !important;
+    }
+}
+@media only screen and (max-width: 250px) {
+    .loginCont {
+        width: calc(200px + 0.3vw) !important;
+    }
+}
+
