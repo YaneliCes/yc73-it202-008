@@ -339,6 +339,20 @@ input {
     font-size: large;
 }
 
+/* the styles for the home products page */
+
+.all-products-container {
+    max-width: 92vw;
+    margin: 0 auto;
+    margin-bottom: 3%;
+}
+.all-products-container .row > div:last-child input[type="number"] {
+    width: 65%;
+}
+.all-products-container input[type="submit"] {
+    width: 15%;
+}
+
 
 /* the styles for the list products page */
 
@@ -359,7 +373,7 @@ input {
     margin-bottom: 11px !important;
 }
 .list-products-container .row > div:last-child input[type="number"] {
-    width: 75%; /* Adjust the width as needed */
+    width: 75%;
 }
 .list-products-container input[type="submit"] {
     width: 20%;

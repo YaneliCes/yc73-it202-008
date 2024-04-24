@@ -31,7 +31,8 @@ if ($id > -1) {
     }
 } else {
     flash("Invalid id passed", "danger");
-    die(header("Location:" . get_url("../Project/home.php")));
+    //die(header("Location:" . get_url("../Project/home.php")));
+    redirect("home.php");
 }
 foreach ($product as $key => $value) {
     if (is_null($value)) {
@@ -61,10 +62,10 @@ foreach ($product as $key => $value) {
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
+                                    <img src="<?php se($product, "contextualImageUrl", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="<?php se($product, "contextualImageUrl", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
+                                    <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

@@ -53,7 +53,8 @@ $is_clear = isset($_GET["clear"]);
 if ($is_clear) {
     session_delete($session_key);
     unset($_GET["clear"]);
-    die(header("Location: " . $session_key));
+    //die(header("Location: " . $session_key));
+    redirect($session_key);
 } else {
     $session_data = session_load($session_key);
 }
@@ -174,7 +175,7 @@ $table = [
     <div class="list-products-title">
         <!--<h3>Products</h3>-->
     </div>
-    <div class="list-products-container">
+    <div class="all-products-container">
         <form method="GET">
             <div class="row mb-3" style="align-items: flex-end;">
 

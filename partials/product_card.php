@@ -18,18 +18,19 @@ if (!isset($product)) {
                     <li class="list-group-item">Type: <?php se($product, "typeName", "Unknown"); ?></li>
                 </ul>
             </div>
-
-            <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
-                <div class="card-body">
-                    <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-primary">View</a>
-                </div>
-            <!--
-            <?php //else : ?>
-                <div class="card-body">
-                    <div class="bg-warning text-dark text-center">Broker not available</div>
-                </div>
-            -->
-            <?php endif; ?>
+            <div class="card-body">
+                <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
+            
+                <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
+                        <a href="<?php //echo get_url('api/purchase_product.php?id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
+                <!--
+                <?php //else : ?>
+                    <div class="card-body">
+                        <div class="bg-warning text-dark text-center">Broker not available</div>
+                    </div>
+                -->
+                <?php endif; ?>
+            </div>
 
         </div>
     </div>
