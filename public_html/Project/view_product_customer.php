@@ -1,11 +1,8 @@
 <?php
 //note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav.php");
 
-if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    die(header("Location: $BASE_PATH" . "/home.php"));
-}
+is_logged_in(true);
 ?>
 
 <?php
@@ -34,7 +31,7 @@ if ($id > -1) {
     }
 } else {
     flash("Invalid id passed", "danger");
-    die(header("Location:" . get_url("admin/list_products.php")));
+    die(header("Location:" . get_url("../Project/home.php")));
 }
 foreach ($product as $key => $value) {
     if (is_null($value)) {
@@ -45,7 +42,7 @@ foreach ($product as $key => $value) {
 ?>
 <div class="container-fluid viewProd-whole">
     <div>
-        <a href="<?php echo get_url("admin/list_products.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
+        <a href="<?php echo get_url("home.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
     </div>
     <div class="container-fluid viewProd-content">
         <h3  class="viewProd-title">Product: <?php se($product, "name", "Unknown"); ?></h3>
@@ -64,10 +61,10 @@ foreach ($product as $key => $value) {
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="...">
+                                    <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="<?php se($product, "contextualImageUrl", "Unknown"); ?>" class="w-100" alt="...">
+                                    <img src="<?php se($product, "contextualImageUrl", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>">
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -89,19 +86,10 @@ foreach ($product as $key => $value) {
                         <li class="list-group-item">Name: <?php se($product, "name", "Unknown"); ?></li>
                         <li class="list-group-item">Price: <?php se($product, "price", "Unknown"); ?></li>
                         <li class="list-group-item">Measurement: <?php se($product, "measurement", "Unknown"); ?></li>
-                        <li class="list-group-item">Stock: <?php se($product, "stock", "Unknown"); ?></li>
                         <li class="list-group-item">Type: <?php se($product, "typeName", "Unknown"); ?></li>
                         <li class="list-group-item">Category: <?php se($product, "categoryPath", "Unknown"); ?></li>
                         <li class="list-group-item">Url: <a href="<?php se($product, "url", "Unknown"); ?>" target="_blank"><?php se($product, "url", "Unknown"); ?></a> </li>
                     </ul>
-                    <div class="row mt-3">
-                        <div class="col-md-3 viewProd-edit">
-                            <a href="<?php echo get_url("admin/edit_product.php?id=" . $id); ?>" class="btn btn-secondary">Edit</a>
-                        </div>
-                        <div class="col-md-3 viewProd-delete">
-                            <a href="<?php echo get_url("admin/delete_product.php?id=" . $id); ?>" class="btn btn-secondary">Delete</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -115,5 +103,5 @@ foreach ($product as $key => $value) {
 
 <?php
 //note we need to go up 1 more directory
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>

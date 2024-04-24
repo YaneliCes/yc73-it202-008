@@ -14,3 +14,8 @@ function render_table($data = array())
 {
     include(__DIR__ . "/../partials/table.php");
 }
+
+function render_product_card($product = array())
+{
+    include(__DIR__ . "/../partials/product_card.php");
+}
