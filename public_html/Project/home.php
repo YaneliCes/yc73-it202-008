@@ -40,14 +40,12 @@ $form = [
 error_log("Form data: " . var_export($form, true));
 
 
-
-//$query = "SELECT b.id, name, rarity, life, power, defense, stonks, ub.user_id FROM `IT202-S24-Brokers` b
-//LEFT JOIN `IT202-S24-UserBrokers` ub on b.id = ub.broker_id WHERE 1=1";
+$total_records = get_total_count("`Products` pr LEFT JOIN `UserProducts` upr on pr.id = upr.product_id");
 
 /* yc73 */
 /* 4/12/23 */
 //$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
-$query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, is_api, upr.user_id FROM `Products` pr
+$query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, is_api, upr.user_id FROM `Products` pr
 LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id WHERE 1 = 1";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
@@ -121,7 +119,10 @@ if (count($_GET) > 0) {
     if (!in_array($sort, ["name", "price", "typeName", "categoryPath", "created", "modified"])) {
         $sort = "created";
     }
-
+    //tell mysql I care about the data from table "b"
+    if ($sort === "created" || $sort === "modified") {
+        $sort = "pr." . $sort;
+    }
     $order = se($_GET, "order", "desc", false);
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
@@ -204,6 +205,7 @@ $table = [
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
         </form>
+        <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
             <?php foreach ($results as $product) : ?>
                 <div class="col">
@@ -211,6 +213,11 @@ $table = [
                     
                 </div>
             <?php endforeach; ?>
+            <?php if (count($results) === 0) : ?>
+                <div class="col">
+                    No results to show
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

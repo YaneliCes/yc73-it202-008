@@ -32,6 +32,7 @@ error_log("Form data: " . var_export($form, true));
 
 /* yc73 */
 /* 4/12/23 */
+$total_records = get_total_count("`Products`");
 $query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
@@ -125,6 +126,17 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
+else {
+    try {
+        $limit = (int)se($_GET, "limit", "10", false);
+    } catch (Exception $e) {
+        $limit = 10;
+    }
+    if ($limit < 1 || $limit > 100) {
+        $limit = 10;
+    }
+    $query .= " LIMIT $limit";
+}
 
 
 
@@ -168,7 +180,7 @@ $table = [
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
         </form>
-
+        <?php render_result_counts(count($results), $total_records); ?>
         <div class="container-fluid list-products">
             <?php render_table($table); ?>
         </div>

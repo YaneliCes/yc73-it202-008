@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS `UserProducts`
     `id`         int auto_increment not null,
     `user_id`    int,
     `product_id` int,
+    `product_name` VARCHAR(32),
     `price` DECIMAL(7,2),
     `quantity` int,
     `is_active`  TINYINT(1) default 1,

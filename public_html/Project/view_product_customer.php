@@ -18,7 +18,7 @@ if ($id > -1) {
     $db = getDB();
     //query
     //$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, created, modified FROM `Products` WHERE id = :id";
-    $query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, upr.user_id FROM `Products` pr
+    $query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, upr.user_id FROM `Products` pr
     LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id
     WHERE pr.id = :id";
 

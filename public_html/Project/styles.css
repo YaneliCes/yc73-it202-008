@@ -509,6 +509,17 @@ input {
 
 
 
+.oh-products-header {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    padding: 12px;
+    margin: 1vw 1vw 0 1vw;
+}
+.oh-products-remove {
+    margin-left: 10px;
+}
+
 
 @media only screen and (max-width: 1200px) {
     .loginCenter input[type="submit"] {

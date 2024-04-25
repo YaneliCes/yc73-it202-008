@@ -1,6 +1,24 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 
+$db = getDB();
+/* yc73 4/25/23 */
+//remove all associations
+if (isset($_GET["remove"])) {
+    $query = "DELETE FROM `UserProducts` WHERE user_id = :user_id";
+    try {
+        $stmt = $db->prepare($query);
+        $stmt->execute([":user_id" => get_user_id()]);
+        flash("Successfully returned all products", "success");
+    } catch (PDOException $e) {
+        error_log("Error removing product associations: " . var_export($e, true));
+        flash("Error returning product", "danger");
+    }
+
+    redirect("order_history.php");
+}
+
+
 /* yc73 4/24/23 */
 //build search form
 $form = [
@@ -23,9 +41,13 @@ $form = [
 ];
 //error_log("Form data: " . var_export($form, true));
 
+/* yc73 4/25/23 */
+$total_records = get_total_count("`Products` pr
+JOIN `UserProducts` upr ON pr.id = upr.product_id
+WHERE user_id = :user_id", [":user_id" => get_user_id()]);
 
-
-$query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
+/* yc73 4/25/23 */
+$query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
 JOIN `UserProducts` upr ON pr.id = upr.product_id
 WHERE user_id = :user_id";
 $params = [":user_id" => get_user_id()];
@@ -129,7 +151,6 @@ else {
 
 
 
-$db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
 try {
@@ -158,8 +179,8 @@ $table = [
 ];
 ?>
 <div class="container-fluid">
-    <div class="list-products-title">
-        <h3>My Order History</h3>
+    <div class="oh-products-header">
+        <h3 class="oh-title">My Order History <!-- (Total Items: <?php //echo $total_records; ?>)--></h3>
     </div>
     <div class="all-products-container">
         <form method="GET">
@@ -174,13 +195,20 @@ $table = [
             </div>
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
+            <a href="?remove" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger oh-products-remove">Return All Products</a>
         </form>
+        <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
             <?php foreach ($results as $product) : ?>
                 <div class="col">
-                    <?php render_product_card($product); ?>
+                    <?php render_oh_product_card($product); ?>
                 </div>
             <?php endforeach; ?>
+            <?php if (count($results) === 0) : ?>
+                <div class="col">
+                    No results to show
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
