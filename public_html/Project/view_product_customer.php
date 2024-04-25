@@ -17,7 +17,11 @@ if ($id > -1) {
     //fetch
     $db = getDB();
     //query
-    $query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, created, modified FROM `Products` WHERE id = :id";
+    //$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, created, modified FROM `Products` WHERE id = :id";
+    $query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, upr.user_id FROM `Products` pr
+    LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id
+    WHERE pr.id = :id";
+
     try {
         $stmt = $db->prepare($query);
         $stmt->execute([":id" => $id]);
@@ -43,7 +47,8 @@ foreach ($product as $key => $value) {
 ?>
 <div class="container-fluid viewProd-whole">
     <div>
-        <a href="<?php echo get_url("home.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
+        <!-- recieved help from: https://stackoverflow.com/questions/2548566/go-back-to-previous-page -->
+        <a href="<?php echo isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : get_url("home.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
     </div>
     <div class="container-fluid viewProd-content">
         <h3  class="viewProd-title">Product: <?php se($product, "name", "Unknown"); ?></h3>
@@ -91,6 +96,15 @@ foreach ($product as $key => $value) {
                         <li class="list-group-item">Category: <?php se($product, "categoryPath", "Unknown"); ?></li>
                         <li class="list-group-item">Url: <a href="<?php se($product, "url", "Unknown"); ?>" target="_blank"><?php se($product, "url", "Unknown"); ?></a> </li>
                     </ul>
+                </div>
+                <div class="mt-3">            
+                    <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
+                            <a href="<?php echo get_url('api/purchase_product.php?product_id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
+                    <?php else : ?>
+                        <div>
+                            <div class="bg-warning text-dark text-center">Product not available</div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

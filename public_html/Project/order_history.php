@@ -1,23 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
-?>
-<h1 class="homeTitle">Products</h1>
-<?php
 
-/* yc73 4/1/23 */
-if (is_logged_in(true)) {
-    //flash("Welcome, " . get_user_email(");
-    error_log("Session data: " . var_export($_SESSION, true));
-} 
-/*else {
-    flash("You're not logged in");
-}*/
-
-
-
-
-
-/* yc73 4/22/23 */
+/* yc73 4/24/23 */
 //build search form
 $form = [
     
@@ -37,25 +21,20 @@ $form = [
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
 
 ];
-error_log("Form data: " . var_export($form, true));
+//error_log("Form data: " . var_export($form, true));
 
 
 
-//$query = "SELECT b.id, name, rarity, life, power, defense, stonks, ub.user_id FROM `IT202-S24-Brokers` b
-//LEFT JOIN `IT202-S24-UserBrokers` ub on b.id = ub.broker_id WHERE 1=1";
+$query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
+JOIN `UserProducts` upr ON pr.id = upr.product_id
+WHERE user_id = :user_id";
+$params = [":user_id" => get_user_id()];
 
-/* yc73 */
-/* 4/12/23 */
-//$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
-$query = "SELECT pr.id, api_id, name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, is_api, upr.user_id FROM `Products` pr
-LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id WHERE 1 = 1";
-$params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
 $is_clear = isset($_GET["clear"]);
 if ($is_clear) {
     session_delete($session_key);
     unset($_GET["clear"]);
-    //die(header("Location: " . $session_key));
     redirect($session_key);
 } else {
     $session_data = session_load($session_key);
@@ -75,20 +54,12 @@ if (count($_GET) > 0) {
             $form[$k]["value"] = $_GET[$v["name"]];
         }
     }
-
-    //error_log("Data: " . var_dump($form));
-
-    /* yc73 */
-    /* 4/12/23 */
-    //product name
+    //name
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
-        
         $params[":name"] = "%$name%";
     }
-    //error_log("Data: " . var_dump($query));
-    //error_log("Data: " . var_dump($params));
     
     //price
     $price_min = se($_GET, "price_min", "-1", false);
@@ -121,7 +92,10 @@ if (count($_GET) > 0) {
     if (!in_array($sort, ["name", "price", "typeName", "categoryPath", "created", "modified"])) {
         $sort = "created";
     }
-
+    //tell mysql I care about the data from table "b"
+    if ($sort === "created" || $sort === "modified") {
+        $sort = "pr." . $sort;
+    }
     $order = se($_GET, "order", "desc", false);
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
@@ -141,7 +115,6 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-
 else {
     try {
         $limit = (int)se($_GET, "limit", "10", false);
@@ -153,9 +126,6 @@ else {
     }
     $query .= " LIMIT $limit";
 }
-
-
-
 
 
 
@@ -180,15 +150,16 @@ foreach ($results as $index => $product) {
     }
 }
 
+
+
 $table = [
     "data" => $results, "title" => "Products", "ignored_columns" => ["id"],
     "view_url" => get_url("view_product_customer.php"),
-    //"view_url" => get_url("admin/view_product.php"),
 ];
 ?>
 <div class="container-fluid">
     <div class="list-products-title">
-        <!--<h3>Products</h3>-->
+        <h3>My Order History</h3>
     </div>
     <div class="all-products-container">
         <form method="GET">
@@ -208,7 +179,6 @@ $table = [
             <?php foreach ($results as $product) : ?>
                 <div class="col">
                     <?php render_product_card($product); ?>
-                    
                 </div>
             <?php endforeach; ?>
         </div>
@@ -216,8 +186,6 @@ $table = [
 </div>
 
 
-
-
-
-
-<?php require_once(__DIR__ . "/../../partials/flash.php");
+<?php
+require_once(__DIR__ . "/../../partials/flash.php");
+?>
