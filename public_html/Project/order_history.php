@@ -1,14 +1,25 @@
 <?php
-//note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav.php");
 
-if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    //die(header("Location: $BASE_PATH" . "/home.php"));
-    redirect("home.php");
+$db = getDB();
+/* yc73 4/25/23 */
+//remove all associations
+if (isset($_GET["remove"])) {
+    $query = "DELETE FROM `UserProducts` WHERE user_id = :user_id";
+    try {
+        $stmt = $db->prepare($query);
+        $stmt->execute([":user_id" => get_user_id()]);
+        flash("Successfully returned all products", "success");
+    } catch (PDOException $e) {
+        error_log("Error removing product associations: " . var_export($e, true));
+        flash("Error returning product", "danger");
+    }
+
+    redirect("order_history.php");
 }
 
-/* yc73 4/12/23 */
+
+/* yc73 4/24/23 */
 //build search form
 $form = [
     
@@ -23,24 +34,29 @@ $form = [
 
 
     ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["created" => "Created", "modified" => "Modified", "name" => "Name", "price" => "Price"], "include_margin" => false],
-    ["type" => "select", "name" => "order", "label" => "Order", "options" => ["asc" => "+", "desc" => "-"], "include_margin" => false],
+    ["type" => "select", "name" => "order", "label" => "Order", "options" => ["desc" => "-", "asc" => "+"], "include_margin" => false],
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
 
 ];
-error_log("Form data: " . var_export($form, true));
+//error_log("Form data: " . var_export($form, true));
 
-/* yc73 */
-/* 4/12/23 */
-$total_records = get_total_count("`Products`");
-$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
-$params = [];
+/* yc73 4/25/23 */
+$total_records = get_total_count("`Products` pr
+JOIN `UserProducts` upr ON pr.id = upr.product_id
+WHERE user_id = :user_id", [":user_id" => get_user_id()]);
+
+/* yc73 4/25/23 */
+$query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
+JOIN `UserProducts` upr ON pr.id = upr.product_id
+WHERE user_id = :user_id";
+$params = [":user_id" => get_user_id()];
+
 $session_key = $_SERVER["SCRIPT_NAME"];
 $is_clear = isset($_GET["clear"]);
 if ($is_clear) {
     session_delete($session_key);
     unset($_GET["clear"]);
-    //die(header("Location: " . $session_key));
     redirect($session_key);
 } else {
     $session_data = session_load($session_key);
@@ -60,20 +76,12 @@ if (count($_GET) > 0) {
             $form[$k]["value"] = $_GET[$v["name"]];
         }
     }
-
-    //error_log("Data: " . var_dump($form));
-
-    /* yc73 */
-    /* 4/12/23 */
-    //product name
+    //name
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
-        
         $params[":name"] = "%$name%";
     }
-    //error_log("Data: " . var_dump($query));
-    //error_log("Data: " . var_dump($params));
     
     //price
     $price_min = se($_GET, "price_min", "-1", false);
@@ -106,7 +114,10 @@ if (count($_GET) > 0) {
     if (!in_array($sort, ["name", "price", "typeName", "categoryPath", "created", "modified"])) {
         $sort = "created";
     }
-
+    //tell mysql I care about the data from table "b"
+    if ($sort === "created" || $sort === "modified") {
+        $sort = "pr." . $sort;
+    }
     $order = se($_GET, "order", "desc", false);
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
@@ -140,9 +151,6 @@ else {
 
 
 
-/* yc73 */
-/* 4/12/23 */
-$db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
 try {
@@ -152,22 +160,29 @@ try {
         $results = $r;
     }
 } catch (PDOException $e) {
-    error_log("Error fetching stocks " . var_export($e, true));
+    error_log("Error fetching products " . var_export($e, true));
     flash("Unhandled error occurred", "danger");
 }
+foreach ($results as $index => $product) {
+    foreach ($product as $key => $value) {
+        if (is_null($value)) {
+            $results[$index][$key] = "N/A";
+        }
+    }
+}
+
+
 
 $table = [
-    "data" => $results, /*"title" => "Latest Stocks",*/ "ignored_columns" => ["id", "api_id", "measurement", "image", "contextualImageUrl", "imageAlt", "url"],
-    "view_url" => get_url("admin/view_product.php"),
-    "edit_url" => get_url("admin/edit_product.php"),
-    "delete_url" => get_url("admin/delete_product.php")
+    "data" => $results, "title" => "Products", "ignored_columns" => ["id"],
+    "view_url" => get_url("view_product_customer.php"),
 ];
 ?>
 <div class="container-fluid">
-    <div class="list-products-title">
-        <h3>List Products</h3>
+    <div class="oh-products-header">
+        <h3 class="oh-title">My Order History <!-- (Total Items: <?php //echo $total_records; ?>)--></h3>
     </div>
-    <div class="list-products-container">
+    <div class="all-products-container">
         <form method="GET">
             <div class="row mb-3" style="align-items: flex-end;">
 
@@ -176,20 +191,29 @@ $table = [
                         <?php render_input($v); ?>
                     </div>
                 <?php endforeach; ?>
+
             </div>
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
+            <a href="?remove" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger oh-products-remove">Return All Products</a>
         </form>
         <?php render_result_counts(count($results), $total_records); ?>
-        <div class="container-fluid list-products">
-            <?php render_table($table); ?>
+        <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+            <?php foreach ($results as $product) : ?>
+                <div class="col">
+                    <?php render_oh_product_card($product); ?>
+                </div>
+            <?php endforeach; ?>
+            <?php if (count($results) === 0) : ?>
+                <div class="col">
+                    No results to show
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-    
 </div>
 
 
 <?php
-//note we need to go up 1 more directory
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>

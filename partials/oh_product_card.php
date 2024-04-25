@@ -1,4 +1,6 @@
 <?php
+/* yc73 4/25/23 */
+/* product card for order history page */
 if (!isset($product)) {
     error_log("Using Product partial without data");
     flash("Dev Alert: Product called without data", "danger");
@@ -25,9 +27,8 @@ if (!isset($product)) {
                         <a href="<?php echo get_url('api/purchase_product.php?product_id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
 
                 <?php else : ?>
-                        <p class="bg-warning text-dark text-center">Product not available</p>
                         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
-                        
+                        <a href="<?php echo get_url('api/delete_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
                 <?php endif; ?>
             </div>
 
