@@ -11,9 +11,9 @@ if (!isset($product)) {
     <div class="card mx-auto" style="width: 16rem;">
          <?php if (has_role("Admin")) : ?>
             <?php if (isset($product["username"])) : ?>
-            <div class="card-header">
-                Owned By: <?php se($product, "username", "N/A"); ?>
-            </div>
+                <div class="card-header">
+                    Owned By: <?php se($product, "username", "N/A"); ?>
+                </div>
             <?php endif; ?>
         <?php endif; ?>
         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>"> <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>"> </a>
@@ -41,7 +41,7 @@ if (!isset($product)) {
                     <?php endif; ?>
                     <a href="<?php echo get_url('api/return_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
                     <div class="oh-card-profile"><a href="<?php echo get_url("profile.php?id=" . $product["user_id"]); ?>"><?php se($product, "username", "N/A"); ?>'s Profile</a></div>
-                    
+
                 <?php endif; ?>
             </div>
 

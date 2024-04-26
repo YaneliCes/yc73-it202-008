@@ -9,17 +9,17 @@ $db = getDB();
 /* yc73 4/25/23 */
 //remove all associations
 if (isset($_GET["remove"])) {
-    $query = "DELETE FROM `UserProducts` WHERE user_id = :user_id";
+    $query = "DELETE FROM `UserProducts`";
     try {
         $stmt = $db->prepare($query);
-        $stmt->execute([":user_id" => get_user_id()]);
+        $stmt->execute();
         flash("Successfully returned all products", "success");
     } catch (PDOException $e) {
         error_log("Error removing product associations: " . var_export($e, true));
         flash("Error returning product", "danger");
     }
 
-    redirect("order_history.php");
+    redirect("admin/product_associations.php");
 }
 
 //build search form

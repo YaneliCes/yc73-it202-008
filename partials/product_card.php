@@ -36,7 +36,8 @@ if (!isset($product)) {
                     <p class="bg-warning text-dark text-center">Product not available</p>
                     <a href="<?php echo get_url('admin/view_product.php?id=' . $product["id"]); ?>" class="btn btn-secondary" style="margin-right: 10px;">View</a>
                     <a href="<?php echo get_url('api/return_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
-                    <div class="oh-card-profile"><a href="<?php echo get_url("profile.php?id=" . $product["user_id"]); ?>"><?php se($product, "username", "N/A"); ?>'s Profile</a></div>                <?php endif; ?>
+                    <div class="oh-card-profile"><a href="<?php echo get_url("profile.php?id=" . $product["user_id"]); ?>"><?php se($product, "username", "N/A"); ?>'s Profile</a></div>               
+                <?php endif; ?>
                 
             <?php else : ?>
                 <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
