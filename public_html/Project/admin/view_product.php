@@ -47,7 +47,8 @@ foreach ($product as $key => $value) {
 ?>
 <div class="container-fluid viewProd-whole">
     <div>
-        <a href="<?php echo get_url("admin/list_products.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
+        <!-- recieved help from: https://stackoverflow.com/questions/2548566/go-back-to-previous-page -->
+        <a href="<?php echo isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : get_url("home.php"); ?>" class="viewProd-back btn btn-secondary">Back</a>
     </div>
     <div class="container-fluid viewProd-content">
         <h3  class="viewProd-title">Product: <?php se($product, "name", "Unknown"); ?></h3>
@@ -97,10 +98,15 @@ foreach ($product as $key => $value) {
                         <li class="list-group-item">Url: <a href="<?php se($product, "url", "Unknown"); ?>" target="_blank"><?php se($product, "url", "Unknown"); ?></a> </li>
                     </ul>
                     <div class="row mt-3">
-                        <div class="col-md-3 viewProd-edit">
+                        <div class="col-md-2 viewProd-edit">
                             <a href="<?php echo get_url("admin/edit_product.php?id=" . $id); ?>" class="btn btn-secondary">Edit</a>
                         </div>
-                        <div class="col-md-3 viewProd-delete">
+                        <div class="col-md-2 viewProd-return">
+                            <a href="<?php echo get_url("api/return_product.php?product_id=" . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 viewProd-delete">
                             <a href="<?php echo get_url("admin/delete_product.php?id=" . $id); ?>" class="btn btn-secondary">Delete</a>
                         </div>
                     </div>

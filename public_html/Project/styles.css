@@ -169,7 +169,8 @@ input {
 .homeTitle {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-align: center;
-    padding-top: 2%;
+    margin-top: 1.5%;
+    margin-bottom: 1.8%;
 }
 
 /* the styles for the profile page */
@@ -187,6 +188,18 @@ input {
     box-shadow: 0px 0px 8px #cccbcb;
     padding: 40px;
     padding-top: 20px;  
+}
+.profile-view {
+    margin: 20px 0;
+}
+.profile-edit {
+    margin: 20px 40px;
+}
+.prof-view-btn {
+    margin-left: 3%;
+}
+.prof-edit-btn {
+    margin-bottom: 1.5%;
 }
 .profileCont label {
     font-size: 15px;
@@ -499,8 +512,14 @@ input {
     background-color: #0d6efd;
     border: #0d6efd;
 }
-.viewProd-delete {
+.viewProd-return {
     margin-left: auto;
+    z-index: 2;
+}
+.viewProd-delete {
+    margin-top: -410px;
+    margin-left: auto;
+    z-index: 1;
 }
 .viewProd-delete a {
     background-color: #dc3545;
@@ -517,6 +536,21 @@ input {
     margin: 1vw 1vw 0 1vw;
 }
 .oh-products-remove {
+    margin-left: 10px;
+}
+.oh-card-profile {
+    margin-top: 5%;
+}
+
+
+.ad-products-header {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    padding: 12px;
+    margin: 1vw 1vw 0 1vw;
+}
+.ad-products-remove {
     margin-left: 10px;
 }
 

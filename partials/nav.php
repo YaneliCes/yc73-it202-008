@@ -68,6 +68,7 @@ session_start();
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_product.php'); ?>">Create Product</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_products.php'); ?>">List Products</a></li>
+                            <li><a class="dropdown-item" href="<?php echo get_url('admin/product_associations.php'); ?>">Product Associations</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
