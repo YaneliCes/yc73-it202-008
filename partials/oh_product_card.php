@@ -6,10 +6,24 @@ if (!isset($product)) {
     flash("Dev Alert: Product called without data", "danger");
 }
 ?>
+
+<?php 
+    /* yc73 4/26/23 */
+    $db = getDB();
+    $query = "SELECT product_id, COUNT(user_id) AS total_users FROM `UserProducts` GROUP BY product_id";
+    try {
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $assoc_products = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Error getting number of users: " . var_export($e, true));
+    }
+?>
+
 <?php if (isset($product)) : ?>
     <!-- https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg -->
     <div class="card mx-auto" style="width: 16rem;">
-         <?php if (has_role("Admin")) : ?>
+        <?php if (has_role("Admin")) : ?>
             <?php if (isset($product["username"])) : ?>
                 <div class="card-header">
                     Owned By: <?php se($product, "username", "N/A"); ?>
@@ -39,8 +53,16 @@ if (!isset($product)) {
                     <?php else : ?>
                         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
                     <?php endif; ?>
+
                     <a href="<?php echo get_url('api/return_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
                     <div class="oh-card-profile"><a href="<?php echo get_url("profile.php?id=" . $product["user_id"]); ?>"><?php se($product, "username", "N/A"); ?>'s Profile</a></div>
+                    <?php if (has_role("Admin")) : ?>
+                        <?php foreach ($assoc_products as $user_product) : ?>
+                            <?php if ($user_product['product_id'] === $product['id']) : ?>
+                                <p class="card-text">Total Customers: <?php echo $user_product['total_users']; ?></p>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
                 <?php endif; ?>
             </div>

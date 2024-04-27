@@ -4,6 +4,7 @@ if (!isset($product)) {
     flash("Dev Alert: Product called without data", "danger");
 }
 ?>
+
 <?php 
     /* yc73 4/26/23 */
     $db = getDB();
@@ -22,9 +23,9 @@ if (!isset($product)) {
     <div class="card mx-auto" style="width: 16rem;">
         <?php if (has_role("Admin")) : ?>
             <?php if (isset($product["username"])) : ?>
-            <div class="card-header">
-                Owned By: <?php se($product, "username", "N/A"); ?>
-            </div>
+                <div class="card-header">
+                    Owned By: <?php se($product, "username", "N/A"); ?>
+                </div>
             <?php endif; ?>
         <?php endif; ?>
         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>"> <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>"> </a>
