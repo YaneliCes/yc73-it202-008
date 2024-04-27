@@ -1,26 +1,12 @@
 <?php
-require(__DIR__ . "/../../partials/nav.php");
-?>
-<h1 class="homeTitle">Products</h1>
-<?php
+require(__DIR__ . "/../../../partials/nav.php");
+if (!has_role("Admin")) {
+    flash("You don't have permission to view this page", "warning");
+    redirect("home.php");
+}
 
-/* yc73 4/1/23 */
-if (is_logged_in(true)) {
-    //flash("Welcome, " . get_user_email(");
-    error_log("Session data: " . var_export($_SESSION, true));
-} 
-/*else {
-    flash("You're not logged in");
-}*/
-
-
-
-
-
-/* yc73 4/22/23 */
 //build search form
 $form = [
-    
     ["type" => "text", "name" => "name", "placeholder" => "Name", "label" => "Product Name", "include_margin" => false],
 
     ["type" => "number", "name" => "price_min", "placeholder" => "Min Price", "label" => "Min Price", "step" => "0.01", "include_margin" => false],
@@ -30,30 +16,23 @@ $form = [
 
     ["type" => "text", "name" => "categoryPath", "placeholder" => "Category", "label" => "Category", "include_margin" => false],
 
-
     ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["created" => "Created", "modified" => "Modified", "name" => "Name", "price" => "Price"], "include_margin" => false],
     ["type" => "select", "name" => "order", "label" => "Order", "options" => ["desc" => "-", "asc" => "+"], "include_margin" => false],
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
-
 ];
 error_log("Form data: " . var_export($form, true));
 
+$total_records = get_total_count("`Products` pr WHERE pr.id NOT IN (SELECT product_id FROM `UserProducts`)");
 
-$total_records = get_total_count("`Products` pr LEFT JOIN `UserProducts` upr on pr.id = upr.product_id");
-
-/* yc73 */
-/* 4/12/23 */
-$query = "SELECT u.username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, upr.user_id 
-FROM `Products` pr
-LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id LEFT JOIN Users u on u.id = upr.user_id WHERE 1 = 1";
+$query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock FROM `Products` pr
+WHERE pr.id NOT IN (SELECT product_id FROM `UserProducts`) ";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
 $is_clear = isset($_GET["clear"]);
 if ($is_clear) {
     session_delete($session_key);
     unset($_GET["clear"]);
-    //die(header("Location: " . $session_key));
     redirect($session_key);
 } else {
     $session_data = session_load($session_key);
@@ -73,20 +52,12 @@ if (count($_GET) > 0) {
             $form[$k]["value"] = $_GET[$v["name"]];
         }
     }
-
-    //error_log("Data: " . var_dump($form));
-
-    /* yc73 */
-    /* 4/12/23 */
-    //product name
+    //name
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
-        
         $params[":name"] = "%$name%";
     }
-    //error_log("Data: " . var_dump($query));
-    //error_log("Data: " . var_dump($params));
     
     //price
     $price_min = se($_GET, "price_min", "-1", false);
@@ -159,7 +130,6 @@ else {
 
 
 
-
 $db = getDB();
 $stmt = $db->prepare($query);
 $results = [];
@@ -183,16 +153,13 @@ foreach ($results as $index => $product) {
 
 $table = [
     "data" => $results, "title" => "Products", "ignored_columns" => ["id"],
-    "view_url" => get_url("view_product_customer.php"),
-    //"view_url" => get_url("admin/view_product.php"),
+    "view_url" => get_url("view_product.php"),
 ];
 ?>
 <div class="container-fluid">
-    <!-- 
-    <div class="list-products-title">
-        <h3>Products</h3>
+    <div class="ad-products-header">
+        <h3 class="ad-title">Available Products</h3>
     </div>
-    -->
     <div class="all-products-container">
         <form method="GET">
             <div class="row mb-3" style="align-items: flex-end;">
@@ -212,7 +179,6 @@ $table = [
             <?php foreach ($results as $product) : ?>
                 <div class="col">
                     <?php render_product_card($product); ?>
-                    
                 </div>
             <?php endforeach; ?>
             <?php if (count($results) === 0) : ?>
@@ -225,8 +191,6 @@ $table = [
 </div>
 
 
-
-
-
-
-<?php require_once(__DIR__ . "/../../partials/flash.php");
+<?php
+require_once(__DIR__ . "/../../../partials/flash.php");
+?>

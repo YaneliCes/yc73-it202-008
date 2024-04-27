@@ -42,9 +42,7 @@ $form = [
 //error_log("Form data: " . var_export($form, true));
 
 /* yc73 4/25/23 */
-$total_records = get_total_count("`Products` pr
-JOIN `UserProducts` upr ON pr.id = upr.product_id
-WHERE user_id = :user_id", [":user_id" => get_user_id()]);
+$total_records = get_total_count("`Products` pr JOIN `UserProducts` upr ON pr.id = upr.product_id WHERE user_id = :user_id", [":user_id" => get_user_id()]);
 
 /* yc73 4/25/23 */
 $query = "SELECT username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id 
