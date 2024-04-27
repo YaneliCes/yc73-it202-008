@@ -190,7 +190,7 @@ $table = [
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
             <?php foreach ($results as $product) : ?>
                 <div class="col">
-                    <?php render_product_card($product); ?>
+                    <?php render_product_card($product); ?>                
                 </div>
             <?php endforeach; ?>
             <?php if (count($results) === 0) : ?>
