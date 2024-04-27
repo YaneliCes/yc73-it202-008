@@ -45,8 +45,9 @@ $total_records = get_total_count("`Products` pr LEFT JOIN `UserProducts` upr on 
 /* yc73 */
 /* 4/12/23 */
 //$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api FROM `Products` WHERE 1=1";
-$query = "SELECT pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, is_api, upr.user_id FROM `Products` pr
-LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id WHERE 1 = 1";
+$query = "SELECT u.username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, pr.created, pr.modified, is_api, upr.user_id 
+FROM `Products` pr
+LEFT JOIN `UserProducts` upr ON pr.id = upr.product_id LEFT JOIN Users u on u.id = upr.user_id WHERE 1 = 1";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
 $is_clear = isset($_GET["clear"]);
@@ -188,9 +189,11 @@ $table = [
 ];
 ?>
 <div class="container-fluid">
+    <!-- 
     <div class="list-products-title">
-        <!--<h3>Products</h3>-->
+        <h3>Products</h3>
     </div>
+    -->
     <div class="all-products-container">
         <form method="GET">
             <div class="row mb-3" style="align-items: flex-end;">

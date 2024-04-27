@@ -1,28 +1,30 @@
 <?php
-require(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../../partials/nav.php");
+if (!has_role("Admin")) {
+    flash("You don't have permission to view this page", "warning");
+    redirect("home.php");
+}
 
 $db = getDB();
 /* yc73 4/25/23 */
 //remove all associations
 if (isset($_GET["remove"])) {
-    $query = "DELETE FROM `UserProducts` WHERE user_id = :user_id";
+    $query = "DELETE FROM `UserProducts`";
     try {
         $stmt = $db->prepare($query);
-        $stmt->execute([":user_id" => get_user_id()]);
+        $stmt->execute();
         flash("Successfully returned all products", "success");
     } catch (PDOException $e) {
         error_log("Error removing product associations: " . var_export($e, true));
         flash("Error returning product", "danger");
     }
 
-    redirect("order_history.php");
+    redirect("admin/product_associations.php");
 }
 
-
-/* yc73 4/24/23 */
 //build search form
 $form = [
-    
+    ["type" => "text", "name" => "username", "placeholder" => "Username", "label" => "Username", "include_margin" => false],
     ["type" => "text", "name" => "name", "placeholder" => "Name", "label" => "Product Name", "include_margin" => false],
 
     ["type" => "number", "name" => "price_min", "placeholder" => "Min Price", "label" => "Min Price", "step" => "0.01", "include_margin" => false],
@@ -32,27 +34,20 @@ $form = [
 
     ["type" => "text", "name" => "categoryPath", "placeholder" => "Category", "label" => "Category", "include_margin" => false],
 
-
     ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["created" => "Created", "modified" => "Modified", "name" => "Name", "price" => "Price"], "include_margin" => false],
     ["type" => "select", "name" => "order", "label" => "Order", "options" => ["desc" => "-", "asc" => "+"], "include_margin" => false],
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
-
 ];
 //error_log("Form data: " . var_export($form, true));
 
-/* yc73 4/25/23 */
 $total_records = get_total_count("`Products` pr
-JOIN `UserProducts` upr ON pr.id = upr.product_id
-WHERE user_id = :user_id", [":user_id" => get_user_id()]);
+JOIN `UserProducts` upr ON pr.id = upr.product_id");
 
-/* yc73 4/25/23 */
-$query = "SELECT username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id 
-FROM `Products` pr
-JOIN `UserProducts` upr ON pr.id = upr.product_id LEFT JOIN Users u ON u.id = upr.user_id
-WHERE user_id = :user_id";
-$params = [":user_id" => get_user_id()];
 
+$query = "SELECT u.username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
+JOIN `UserProducts` upr ON pr.id = upr.product_id JOIN Users u on u.id = upr.user_id";
+$params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
 $is_clear = isset($_GET["clear"]);
 if ($is_clear) {
@@ -76,6 +71,12 @@ if (count($_GET) > 0) {
         if (in_array($v["name"], $keys)) {
             $form[$k]["value"] = $_GET[$v["name"]];
         }
+    }
+    //username
+    $username = se($_GET, "username", "", false);
+    if (!empty($username)) {
+        $query .= " AND u.username like :username";
+        $params[":username"] = "%$username%";
     }
     //name
     $name = se($_GET, "name", "", false);
@@ -138,19 +139,6 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-/*
-else {
-    try {
-        $limit = (int)se($_GET, "limit", "10", false);
-    } catch (Exception $e) {
-        $limit = 10;
-    }
-    if ($limit < 1 || $limit > 100) {
-        $limit = 10;
-    }
-    $query .= " LIMIT $limit";
-}
-*/
 
 
 
@@ -174,16 +162,14 @@ foreach ($results as $index => $product) {
     }
 }
 
-
-
 $table = [
     "data" => $results, "title" => "Products", "ignored_columns" => ["id"],
-    "view_url" => get_url("view_product_customer.php"),
+    "view_url" => get_url("view_product.php"),
 ];
 ?>
 <div class="container-fluid">
-    <div class="oh-products-header">
-        <h3 class="oh-title">My Order History <!-- (Total Items: <?php //echo $total_records; ?>)--></h3>
+    <div class="ad-products-header">
+        <h3 class="ad-title">Associated Products</h3>
     </div>
     <div class="all-products-container">
         <form method="GET">
@@ -198,13 +184,13 @@ $table = [
             </div>
             <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
             <a href="?clear" class="btn btn-secondary">Clear</a>
-            <a href="?remove" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger oh-products-remove">Return All Products</a>
+            <a href="?remove" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger ad-products-remove">Return All Products</a>
         </form>
         <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
             <?php foreach ($results as $product) : ?>
                 <div class="col">
-                    <?php render_oh_product_card($product); ?>
+                    <?php render_product_card($product); ?>                
                 </div>
             <?php endforeach; ?>
             <?php if (count($results) === 0) : ?>
@@ -218,5 +204,5 @@ $table = [
 
 
 <?php
-require_once(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/../../../partials/flash.php");
 ?>

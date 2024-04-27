@@ -6,9 +6,30 @@ if (!isset($product)) {
     flash("Dev Alert: Product called without data", "danger");
 }
 ?>
+
+<?php 
+    /* yc73 4/26/23 */
+    $db = getDB();
+    $query = "SELECT product_id, COUNT(user_id) AS total_users FROM `UserProducts` GROUP BY product_id";
+    try {
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $assoc_products = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log("Error getting number of users: " . var_export($e, true));
+    }
+?>
+
 <?php if (isset($product)) : ?>
     <!-- https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg -->
     <div class="card mx-auto" style="width: 16rem;">
+        <?php if (has_role("Admin")) : ?>
+            <?php if (isset($product["username"])) : ?>
+                <div class="card-header">
+                    Owned By: <?php se($product, "username", "N/A"); ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>"> <img src="<?php se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php se($product, "imageAlt", "Unknown") ?>"> </a>
         <!--<img src="<?php //se($product, "image", "Unknown"); ?>" class="w-100" alt="<?php //se($product, "imageAlt", "Unknown") ?>">-->
         <div class="card-body">
@@ -23,12 +44,26 @@ if (!isset($product)) {
             <div class="card-body">
             
                 <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
-                        <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
-                        <a href="<?php echo get_url('api/purchase_product.php?product_id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
+                    <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
+                    <a href="<?php echo get_url('api/purchase_product.php?product_id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
 
                 <?php else : ?>
+                    <?php if (has_role("Admin")) : ?>
+                        <a href="<?php echo get_url('admin/view_product.php?id=' . $product["id"]); ?>" class="btn btn-secondary" style="margin-right: 10px;">View</a>
+                    <?php else : ?>
                         <a href="<?php echo get_url('view_product_customer.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
-                        <a href="<?php echo get_url('api/delete_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
+                    <?php endif; ?>
+
+                    <a href="<?php echo get_url('api/return_product.php?product_id=' . $product["id"]); ?>" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger">Return</a>
+                    <div class="oh-card-profile"><a href="<?php echo get_url("profile.php?id=" . $product["user_id"]); ?>"><?php se($product, "username", "N/A"); ?>'s Profile</a></div>
+                    <?php if (has_role("Admin")) : ?>
+                        <?php foreach ($assoc_products as $user_product) : ?>
+                            <?php if ($user_product['product_id'] === $product['id']) : ?>
+                                <p class="card-text">Total Customers: <?php echo $user_product['total_users']; ?></p>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
                 <?php endif; ?>
             </div>
 
