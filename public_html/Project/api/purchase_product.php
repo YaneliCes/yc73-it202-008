@@ -24,4 +24,4 @@ if (isset($_GET["product_id"]) && is_logged_in()) {
 }
 
 //for now I'll redirect, but if I later use AJAX I need to send a reply instead
-redirect("home.php");
+redirect("order_history.php");

@@ -41,11 +41,10 @@ $form = [
 ];
 //error_log("Form data: " . var_export($form, true));
 
-$total_records = get_total_count("`Products` pr
-JOIN `UserProducts` upr ON pr.id = upr.product_id");
+$total_records = get_total_count("`Products` pr JOIN `UserProducts` upr ON pr.id = upr.product_id");
 
 
-$query = "SELECT u.username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api, user_id FROM `Products` pr
+$query = "SELECT u.username, pr.id, api_id, pr.name, pr.price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, user_id FROM `Products` pr
 JOIN `UserProducts` upr ON pr.id = upr.product_id JOIN Users u on u.id = upr.user_id";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];

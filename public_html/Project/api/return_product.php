@@ -38,9 +38,9 @@ if (isset($_GET["product_id"]) && is_logged_in()) {
 
 //for now I'll redirect, but if I later use AJAX I need to send a reply instead
 //redirect("order_history.php");
-if (has_role("Admin")) {
-    redirect("admin/product_associations.php");
-}
-else {
-    redirect("order_history.php");
-}
+
+//got help from: https://stackoverflow.com/questions/2548566/go-back-to-previous-page 
+//got help from: https://stackoverflow.com/questions/3560611/get-path-from-url#:~:text=Use%20parse_url%20to%20extract%20the%20information%20you%20want.,%22%2Fpwsdedtech%22%20%24pathWithoutSlash%20%3D%20substr%28%24path%2C%201%29%3B%20%2F%2F%20gives%20%22pwsdedtech%22
+//so i can go back to the back to the last page
+$path = parse_url($_SERVER["HTTP_REFERER"], PHP_URL_PATH);
+redirect($path);
