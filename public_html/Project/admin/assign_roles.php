@@ -97,10 +97,7 @@ if (isset($_POST["username"])) {
                                 <tr>
                                     <td>
                                         <?php render_input(["type" => "checkbox", "id" => "user_".se($user, 'id', "", false), "name" => "users[]", "label" => se($user, "username", "", false), "value" => se($user, 'id', "", false)]) ?>
-                                        <!--
-                                        <label for="user_<?php se($user, 'id'); ?>"><?php se($user, "username"); ?></label>
-                                        <input id="user_<?php se($user, 'id'); ?>" type="checkbox" name="users[]" value="<?php se($user, 'id'); ?>" />
-                                        -->
+
                                     </td>
                                     <td><?php se($user, "roles", "No Roles"); ?></td>
                                 </tr>
@@ -111,10 +108,7 @@ if (isset($_POST["username"])) {
                         <?php foreach ($active_roles as $role) : ?>
                             <div>
                                 <?php render_input(["type" => "checkbox", "id" => "role_".se($role, 'id', "", false), "name" => "roles[]", "label" => se($role, "name", "", false), "value" => se($role, 'id', "", false)]) ?>
-                                <!--
-                                <label for="role_<?php se($role, 'id'); ?>"><?php se($role, "name"); ?></label>
-                                <input id="role_<?php se($role, 'id'); ?>" type="checkbox" name="roles[]" value="<?php se($role, 'id'); ?>" />
-                                -->
+
                             </div>
                         <?php endforeach; ?>
                     </td>

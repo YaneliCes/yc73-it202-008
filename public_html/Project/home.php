@@ -91,12 +91,12 @@ if (count($_GET) > 0) {
     //price
     $price_min = se($_GET, "price_min", "-1", false);
     if (!empty($price_min) && $price_min > -1) {
-        $query .= " AND price >= :price_min";
+        $query .= " AND pr.price >= :price_min";
         $params[":price_min"] = $price_min;
     }
     $price_max = se($_GET, "price_max", "-1", false);
     if (!empty($price_max) && $price_max > -1) {
-        $query .= " AND price <= :price_max";
+        $query .= " AND pr.price <= :price_max";
         $params[":price_max"] = $price_max;
     }
 

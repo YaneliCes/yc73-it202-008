@@ -39,7 +39,7 @@ $form = [
 
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
 ];
-//error_log("Form data: " . var_export($form, true));
+error_log("Form data: " . var_export($form, true));
 
 $total_records = get_total_count("`Products` pr JOIN `UserProducts` upr ON pr.id = upr.product_id");
 
@@ -87,12 +87,12 @@ if (count($_GET) > 0) {
     //price
     $price_min = se($_GET, "price_min", "-1", false);
     if (!empty($price_min) && $price_min > -1) {
-        $query .= " AND price >= :price_min";
+        $query .= " AND pr.price >= :price_min";
         $params[":price_min"] = $price_min;
     }
     $price_max = se($_GET, "price_max", "-1", false);
     if (!empty($price_max) && $price_max > -1) {
-        $query .= " AND price <= :price_max";
+        $query .= " AND pr.price <= :price_max";
         $params[":price_max"] = $price_max;
     }
 
