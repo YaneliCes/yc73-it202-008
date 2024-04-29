@@ -123,6 +123,7 @@ function insert($table_name, $data, $opts = ["debug" => false, "update_duplicate
     }
 }
 
+/* yc73 4/25/23 */
 function get_total_count($table_refs, $params = [])
 {
     //preg_replace('/[^a-zA-Z0-9_-.]/', '', $table_name);

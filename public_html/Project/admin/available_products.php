@@ -78,6 +78,7 @@ if (count($_GET) > 0) {
         $params[":typeName"] = "%$typeName%";
     }
 
+    /* yc73 4/26/23 */
     //category
     $categoryPath = se($_GET, "categoryPath", "", false);
     if (!empty($categoryPath)) {
@@ -176,6 +177,7 @@ $table = [
         </form>
         <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+            <!-- yc73 4/25/23 -->
             <?php foreach ($results as $product) : ?>
                 <div class="col">
                     <?php render_product_card($product); ?>

@@ -81,7 +81,8 @@ else if (isset($_POST["users"]) || isset($_POST["products"])) {
 //get products
 $get_products = [];
 $db = getDB();
-$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api 
+$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, 
+url, categoryPath, stock, is_api 
 FROM `Products` WHERE 1=1";
 
 $params = [];
@@ -153,6 +154,8 @@ if (count($_POST) > 0) {
     if (!in_array($order, ["asc", "desc"])) {
         $order = "desc";
     }
+
+    /* yc73 4/26/23 */
     //IMPORTANT make sure you fully validate/trust $sort and $order (sql injection possibility)
     $query .= " ORDER BY $sort $order";
     //limit
@@ -235,6 +238,18 @@ if (count($_POST) > 0) {
         $query .= " WHERE u.username like :username";
         $params[":username"] = "%$username%";
     }
+
+    //limit
+    try {
+        $limit = (int)se($_POST, "limit", "25", false);
+    } catch (Exception $e) {
+        $limit = 25;
+    }
+    if ($limit < 1 || $limit > 100) {
+        $limit = 25;
+    }
+    //IMPORTANT make sure you fully validate/trust $limit (sql injection possibility)
+    $query .= " LIMIT $limit";
 }
 //error_log("Username Query: " . var_export($query));
 
