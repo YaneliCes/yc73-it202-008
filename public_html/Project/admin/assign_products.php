@@ -54,7 +54,8 @@ if (isset($_POST["users"]) && isset($_POST["products"])) {
                     }
 
                     else {
-                        $query = "INSERT INTO UserProducts (user_id, product_id, product_name, price, is_active) VALUES (:user_id, :product_id, (SELECT name FROM Products WHERE id = :product_id), (SELECT price FROM Products WHERE id = :product_id), 1) 
+                        $query = "INSERT INTO UserProducts (user_id, product_id, product_name, price, is_active) VALUES (:user_id, :product_id, 
+                        (SELECT name FROM Products WHERE id = :product_id), (SELECT price FROM Products WHERE id = :product_id), 1) 
                         ON DUPLICATE KEY UPDATE is_active = !is_active";
                         $stmt = $db->prepare($query);
                         $stmt->execute([":user_id" => $user_id, ":product_id" => $product_id]);  
@@ -81,8 +82,7 @@ else if (isset($_POST["users"]) || isset($_POST["products"])) {
 //get products
 $get_products = [];
 $db = getDB();
-$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, 
-url, categoryPath, stock, is_api 
+$query = "SELECT id, api_id, name, price, measurement, typeName, image, contextualImageUrl, imageAlt, url, categoryPath, stock, is_api 
 FROM `Products` WHERE 1=1";
 
 $params = [];
@@ -155,7 +155,7 @@ if (count($_POST) > 0) {
         $order = "desc";
     }
 
-    /* yc73 4/26/23 */
+    /* yc73 4/26/23 products */
     //IMPORTANT make sure you fully validate/trust $sort and $order (sql injection possibility)
     $query .= " ORDER BY $sort $order";
     //limit
@@ -239,6 +239,7 @@ if (count($_POST) > 0) {
         $params[":username"] = "%$username%";
     }
 
+    /* yc73 4/26/23 (username)*/
     //limit
     try {
         $limit = (int)se($_POST, "limit", "25", false);
@@ -287,6 +288,7 @@ try {
             <a href="?clear" class="btn btn-secondary">Clear</a>
         </form>
 
+        <!-- yc73 4/26/23 -->
         <form method="POST">
             <?php if (isset($username) && !empty($username)) : ?>
                 <input type="hidden" name="username" value="<?php se($username, false); ?>" />
@@ -304,6 +306,7 @@ try {
                                     <?php foreach ($users as $user) : ?>
                                         <tr>
                                             <td>
+                                                <!-- yc73 4/26/23 (checkbox) -->
                                                 <?php render_input(["type" => "checkbox", "id" => "user_".se($user, 'id', "", false), "name" => "users[]", "label" => se($user, "username", "", false), "value" => se($user, 'id', "", false)]) ?>
                                             </td>
                                             <td><?php se($user, "product", "No Products"); ?></td>
@@ -317,6 +320,7 @@ try {
                                 <table class="table">
                                     <?php foreach ($get_products as $prod) : ?>
                                         <tr>
+                                            <!-- yc73 4/26/23 (checkbox) -->
                                             <td><?php render_input(["type" => "checkbox", "id" => "product_".se($prod, 'id', "", false), "name" => "products[]", "label" => se($prod, "name", "", false), "value" => se($prod, 'id', "", false)]) ?></td>
                                             <td><?php se($prod, "price", "No Info"); ?></td>
                                             <td><?php se($prod, "typeName", "No Info"); ?></td>
