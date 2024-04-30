@@ -41,7 +41,7 @@ $stmt = $db->prepare($query);
 $results = [];
 try {
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $results = $All(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "<pre>" . var_export($e, true) . "</pre>";
 }

@@ -5,7 +5,8 @@ require(__DIR__ . "/../../../partials/nav.php");
 /* yc73 4/14/23 */
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: $BASE_PATH" . "/home.php"));
+    //die(header("Location: $BASE_PATH" . "/home.php"));
+    redirect("home.php");
 }
 ?>
 
@@ -82,7 +83,8 @@ if (!has_role("Admin")) {
     }
     else {
         flash("Invalid id passed", "danger");
-        die(header("Location:" . get_url("admin/list_products.php")));
+        //die(header("Location:" . get_url("admin/list_products.php")));
+        redirect("admin/list_products.php");
     }
 
     /* yc73 4/14/23 */
