@@ -3,6 +3,7 @@
 // this is not a standalone page
 //Note: no nav.php here because this is a temporary stop, it's not a user page
 require(__DIR__ . "/../../../lib/functions.php");
+//yc73 4-25-24
 session_start();
 if (isset($_GET["product_id"]) && is_logged_in()) {
     //TODO implement purchase logic (for now it's all free)

@@ -35,7 +35,7 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
     <form method="POST">
         <div class="crCont">
             <?php render_input(["id" => "name", "name" => "name", "label" => "Name", "rules" => ["required" => true]]); ?>
-            <?php render_input(["type" => "textarea", "id" => "name", "name" => "name", "label" => "Description", "rules" => ["required" => true]]); ?>
+            <?php render_input(["type" => "textarea", "id" => "name", "name" => "description", "label" => "Description", "rules" => ["required" => true]]); ?>
             <?php render_button(["text" => "Create Role", "type" => "submit"]); ?>
         </div>
     </form>

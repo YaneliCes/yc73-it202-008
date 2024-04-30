@@ -95,7 +95,8 @@ if (count($_GET) > 0) {
         $query .= " AND pr.price <= :price_max";
         $params[":price_max"] = $price_max;
     }
-
+    
+    /* yc73 4/25/23 */
     //product type
     $typeName = se($_GET, "typeName", "", false);
     if (!empty($typeName)) {
@@ -138,9 +139,7 @@ if (count($_GET) > 0) {
     $query .= " LIMIT $limit";
 }
 
-
-
-
+/* yc73 4/25/23 */
 $stmt = $db->prepare($query);
 $results = [];
 try {
@@ -187,6 +186,7 @@ $table = [
         </form>
         <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+            <!-- yc73 4/25/23 -->
             <?php foreach ($results as $product) : ?>
                 <div class="col">
                     <?php render_product_card($product); ?>                

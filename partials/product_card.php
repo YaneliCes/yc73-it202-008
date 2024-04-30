@@ -17,7 +17,7 @@ if (!isset($product)) {
         error_log("Error getting number of users: " . var_export($e, true));
     }
 ?>
-
+<!-- yc73 4/25/23 -->
 <?php if (isset($product)) : ?>
     <!-- https://i.kym-cdn.com/entries/icons/original/000/029/959/Screen_Shot_2019-06-05_at_1.26.32_PM.jpg -->
     <div class="card mx-auto" style="width: 16rem;">
@@ -43,6 +43,7 @@ if (!isset($product)) {
             <?php if (has_role("Admin")) : ?>
                 <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>
                     <?php $id = isset($product["id"]) ? $product["id"] : (isset($_GET["id"]) ? $_GET["id"] : -1); ?>
+                     <!-- yc73 4/25/23 -->
                     <a href="<?php echo get_url('admin/view_product.php?id=' . $product["id"]); ?>" class="btn btn-secondary">View</a>
                     <a href="<?php echo get_url('api/purchase_product.php?product_id=' . $product["id"]); ?>" class="btn btn-primary">Purchase</a>
 

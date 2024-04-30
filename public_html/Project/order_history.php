@@ -181,7 +181,7 @@ $table = [
 ?>
 <div class="container-fluid">
     <div class="oh-products-header">
-        <h3 class="oh-title">My Order History <!-- (Total Items: <?php //echo $total_records; ?>)--></h3>
+        <h3 class="oh-title">My Order History</h3>
     </div>
     <div class="all-products-container">
         <form method="GET">
@@ -198,6 +198,7 @@ $table = [
             <a href="?clear" class="btn btn-secondary">Clear</a>
             <a href="?remove" onclick="confirm('Are you sure')?'':event.preventDefault()" class="btn btn-danger oh-products-remove">Return All Products</a>
         </form>
+        <!-- yc73 4/25/23 -->
         <?php render_result_counts(count($results), $total_records); ?>
         <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
             <?php foreach ($results as $product) : ?>

@@ -189,10 +189,10 @@ input {
     padding: 40px;
     padding-top: 20px;  
 }
-.profile-view {
+.profile-edit {
     margin: 20px 0;
 }
-.profile-edit {
+.profile-view {
     margin: 20px 40px;
 }
 .prof-view-btn {
@@ -556,13 +556,11 @@ input {
 
 
 .assignProd-usercontent {
-    /* enable div scrolling */ 
     overflow: scroll; 
     height: 500px; 
     border: 1px rgb(206, 205, 205) solid; 
 }
 .assignProd-content {
-    /* enable div scrolling */ 
     overflow: scroll; 
     height: 500px; 
     border: 1px rgb(206, 205, 205) solid; 

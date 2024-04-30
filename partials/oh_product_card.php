@@ -41,6 +41,7 @@ if (!isset($product)) {
                     <li class="list-group-item">Type: <?php se($product, "typeName", "Unknown"); ?></li>
                 </ul>
             </div>
+            <!-- yc73 4/26/23 -->
             <div class="card-body">
             
                 <?php if (!isset($product["user_id"]) || $product["user_id"] === "N/A") : ?>

@@ -123,9 +123,10 @@ if ($user_id > 0) {
 }
 ?>
 
+<!-- yc73 4/26/23 -->
 <div class="container-fluid profileBody">
         <?php if ($is_me && $is_edit) : ?>
-            <div class ="profile-view">
+            <div class ="profile-edit">
                 <a class="btn btn-secondary btn-sm prof-view-btn" href="?">View</a>
                 <form method="POST" onsubmit="return validate(this);">
                     <div class="profileCont">
@@ -141,8 +142,8 @@ if ($user_id > 0) {
                 </form>
             </div>
         <?php else : ?>
-            <div class ="profile-edit">
-                <a href="<?php echo get_url("admin/product_associations.php"); ?>" class="btn btn-secondary btn-sm prof-edit-btn" style="margin-right: 1%;">Back</a>
+            <div class ="profile-view">
+                <a href="<?php echo get_url("home.php"); ?>" class="btn btn-secondary btn-sm prof-edit-btn" style="margin-right: 1%;">Back</a>
                 <?php if ($is_me) : ?>
                     <a class="btn btn-primary btn-sm prof-edit-btn" href="?edit">Edit</a>
                 <?php endif; ?>
