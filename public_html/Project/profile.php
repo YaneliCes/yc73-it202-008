@@ -131,7 +131,7 @@ if ($user_id > 0) {
                 <form method="POST" onsubmit="return validate(this);">
                     <div class="profileCont">
                         <?php render_input(["type" => "email", "id" => "email", "name" => "email", "label" => "Email", "value" => se($user, "email", "", false), "rules" => ["required" => true]]); ?>
-                        <?php render_input(["type" => "text", "id" => "username", "name" => "username", "label" => "Username", "value" => se($user, "email", "", false), "rules" => ["required" => true, "maxlength" => 30]]); ?>
+                        <?php render_input(["type" => "text", "id" => "username", "name" => "username", "label" => "Username", "value" => se($user, "username", "", false), "rules" => ["required" => true, "maxlength" => 30]]); ?>
                         <!-- DO NOT PRELOAD PASSWORD -->
                         <div class="lead pwLabel">Password Reset</div>
                         <?php render_input(["type" => "password", "id" => "cp", "name" => "currentPassword", "label" => "Current Password", "rules" => ["minlength" => 8]]); ?>
