@@ -555,6 +555,20 @@ input {
 }
 
 
+.assignProd-usercontent {
+    /* enable div scrolling */ 
+    overflow: scroll; 
+    height: 500px; 
+    border: 1px rgb(206, 205, 205) solid; 
+}
+.assignProd-content {
+    /* enable div scrolling */ 
+    overflow: scroll; 
+    height: 500px; 
+    border: 1px rgb(206, 205, 205) solid; 
+}
+
+
 @media only screen and (max-width: 1200px) {
     .loginCenter input[type="submit"] {
         font-size: calc(10px + 0.5vw) !important;
